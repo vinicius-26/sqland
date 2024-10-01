@@ -1,0 +1,443 @@
+.background {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-background);
+}
+
+.login_background {
+  background-color: var(--color-primary-light);
+  color: var(--color-box-base);
+  height: 80%;
+  width: 70%;
+  border-radius: 20px;
+
+  display: flex;
+  flex-direction: row;
+
+  padding: 100px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.login_background h1{
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 7.2rem;    
+}
+
+.login_background p{
+  letter-spacing: 0.03rem;   
+  font-weight: 300;
+  padding-top: 1rem;
+}
+
+.login_background img{
+  padding-top: 3rem;
+}
+
+.login_title {
+  height: 100%;
+  width: 50%;
+}
+
+.login_inputs{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+}
+
+.login_inputs p{
+  margin-bottom: 20px;
+}
+
+.errorLabel {
+  font-size: 14px;
+  min-height: 25px; /* Garante que o espaço para a mensagem de erro seja fixo */
+  margin-top: 5px;
+}
+
+.inputBox {
+  height: 48px;
+  width: 400px;
+  font-size: large;
+  border-radius: 8px;
+  border: 1px solid grey;
+  padding-left: 8px;
+}
+
+/* Criação dos Inputs */
+.input_group {
+  position: relative;
+  margin: 5px 0;
+}
+
+.input_group_birthdate {
+  position: relative;
+  margin: 15px 0;
+}
+
+.input_group label {
+  position: absolute;
+  top: 28%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: 400;
+  color: #dfdfdf;
+  padding: 0 5px;
+  pointer-events: none;
+  transition: .3s;
+}
+
+.input_group_birthdate label {
+  position: absolute;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #f0f0f7;
+  padding: 0 5px;
+  pointer-events: none;
+  top: 0;
+  left: 5px;
+  font-size: 12px;
+  color: #dfdfdf;
+  padding-bottom: 12px;
+  font-weight: 400;
+}
+
+.input_group input {
+  width: 400px;
+  height: 40px;
+  font-size: 14px;
+  padding: 0 10px;
+  background: transparent;
+  border-bottom: 1.2px solid #fff;
+  color: #f0f0f7;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  outline: none;
+  border-radius: 5px;
+}
+
+.input_group_birthdate input {
+  width: 400px;
+  height: 40px;
+  font-size: 14px;
+  padding: 0 10px;
+  background: transparent;
+  border-bottom: 1.2px solid #fff;
+  color: #f0f0f7;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  outline: none;
+  border-radius: 5px;
+}
+
+.input_group input:focus~label,
+.input_group input:valid~label {
+  top: 0;
+  padding-bottom: 3px;
+  left: 5px;
+  font-size: 12px;
+  color: #dfdfdf;
+}
+
+.login_button{
+  padding-top: 20px;
+  width: 70%;
+}
+
+.login_button input{
+  background: var(--color-secundary-light);
+  border: 0;
+  color: var(--color-button-text);
+  width: 100%;
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.login_button input:hover{
+  cursor: pointer;
+  background: #04b453;
+  transition: 0.2s;
+}
+
+.eye_icon{
+  position: absolute;
+  top: 25%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #f0f0f7;
+  padding: 0 5px;
+}
+
+.icon:hover{
+  cursor: pointer;
+}
+
+.login_register{
+  margin-top: 50px;
+}
+
+.login_register span{
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.login_register span:hover{
+  color: #dfdfdf;
+}
+
+.spinner_container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animação de fade-in */
+.fade_in {
+  opacity: 0;
+  animation: fadeInAnimation 0.5s forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px); /* Efeito opcional de deslizar */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Retorna à posição original */
+  }
+}
+
+/* Classe de ocultação para fade-out, se quiser uma transição de saída */
+.fade_out {
+  opacity: 1;
+  animation: fadeOutAnimation 0.5s forwards;
+}
+
+@keyframes fadeOutAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px); /* Deslizar para fora */
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.animation_control {
+  overflow: hidden; /* Evita o crescimento além do limite do contêiner */
+  width: 100vw;     /* Garante que a largura não exceda o tamanho da viewport */
+}
+
+/* CSS do Modal */ 
+.modalContainer {
+  position: fixed;
+  display: table;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  z-index: 1;
+  color: #222222;
+}
+
+.modal_button button{
+  background: var(--color-secundary-light);
+  border: 0;
+  color: var(--color-button-text);
+  padding: 5px 20px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+  margin-top: 35px;
+  margin-left: 15px;
+  width: auto;
+}
+
+.modal_button button:hover{
+  background: #03863e;
+  cursor: pointer;
+}
+
+.modal_button button:last-child{
+  background: grey;
+}
+
+.modal_button button:last-child:hover{
+  background: rgb(88, 88, 88);
+}
+
+.modalContainer .modalBackground {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modalContainer .modalBackground .modal {
+  background: #211f23;
+  width: 500px;
+  height: 300px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-weight: 300;
+  position: relative;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.modalContainer .modalBackground .modal h2 {
+  font-size: 25px;
+  line-height: 25px;
+  margin-bottom: 15px;
+  color: #f9f9f9;
+}
+
+.modalContainer .modalBackground .modal p {
+  font-size: 18px;
+  line-height: 22px;
+  color: var(--color-button-text);
+  padding: 10px;
+}
+
+.modalContainer .modalBackground .modal .modalSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  display: none;
+}
+
+.modalContainer .modalBackground .modal .modalSvg rect {
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-dasharray: 778;
+  stroke-dashoffset: 778;
+}
+
+/* // -- //  */
+
+.modalContainer.active {
+  transform: scale(1);
+}
+.modalContainer.active .modalBackground {
+  background: rgba(0, 0, 0, 0);
+  animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.modalContainer.active .modalBackground .modal {
+  opacity: 0;
+  animation: scaleUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.modalContainer.active + .content {
+  animation: scaleBack 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.modalContainer.out {
+  animation: quickScaleDown 0.85s linear forwards;
+}
+.modalContainer.out .modalBackground {
+  animation: fadeOut 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.modalContainer.out .modalBackground .modal {
+  animation: scaleDown 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.modalContainer.out + .content {
+  animation: scaleForward 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(0.8) translateY(1000px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleBack {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.85);
+  }
+}
+
+@keyframes quickScaleDown {
+  0% {
+    transform: scale(1);
+  }
+  99.9% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes scaleDown {
+  0% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8) translateY(1000px);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleForward {
+  0% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* CSS do Modal */ 

@@ -1,0 +1,61 @@
+.progress_bar_main_home{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  z-index: 100;
+  position: absolute;
+  top: 40px;
+  flex-direction: column;
+  color: var(--color-box-base);
+}
+
+.progress_bar_main_exercises{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  z-index: 100;
+  position: absolute;
+  top: 40px;
+  flex-direction: column;
+  color: var(--color-primary-light);
+}
+
+.progress_bar_text{
+  width: 80%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.progress_bar_text p{
+  font-weight: 400;
+}
+
+/* Container da barra de progresso */
+.progress_bar_container {
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 15px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  /* Cor de fundo da barra */
+  /* Para que fique acima dos slides */
+}
+
+/* Barra de progresso */
+.progress_bar {
+  height: 100%;
+  width: 0;
+  background-color: #4caf50;
+  /* Cor da barra de progresso */
+  transition: width 0.75s cubic-bezier(0.75, 0.25, 0, 1.05);
+  /* Transição suave */
+  border-radius: 10px;
+}

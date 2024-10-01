@@ -1,0 +1,437 @@
+/* The basic stuff to make it work */
+.contenedor {
+  width: 100vw;
+  height: 100vh;
+  /* background: deeppink; */
+  background-color: var(--color-primary-light);
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  font-family: "Open sans", sans-serif;
+  font-size: 16px;
+  font-weight: 100;
+  color: white;
+}
+
+.contenedor form {
+  box-sizing: border-box;
+  text-align: center;
+  padding: 22px;
+  display: inline-flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  justify-content: center;
+}
+
+.contenedor form input {
+  height: 0;
+  margin: 12px 0;
+  z-index: 1;
+}
+
+.contenedor form input:checked {
+  outline: 0;
+  border: 0;
+}
+
+.contenedor form input:before {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.81);
+  border-radius: 11px;
+  cursor: pointer;
+  transition: all 0.25s linear;
+}
+
+.contenedor form input:checked:before {
+  background-color: white;
+}
+
+.contenedor form input:after {
+  content: "" attr(title) "";
+  position: relative;
+  left: 30px;
+  opacity: 0;
+  color: white;
+  font-size: 9px;
+  display: block;
+  min-width: 80px;
+  transition: all 0.25s linear;
+}
+
+.contenedor form input:checked:after {
+  opacity: 1;
+  left: 20px;
+}
+
+.contenedor form input:hover:after:not(label) {
+  opacity: 1;
+}
+
+.contenedor form input:nth-of-type(1):checked~.labels label {
+  transform: translateY(-0%);
+}
+
+.contenedor form input:nth-of-type(2):checked~.labels label {
+  transform: translateY(-100%);
+}
+
+.contenedor form input:nth-of-type(3):checked~.labels label {
+  transform: translateY(-200%);
+}
+
+.contenedor form input:nth-of-type(4):checked~.labels label {
+  transform: translateY(-300%);
+}
+
+.contenedor form input:nth-of-type(5):checked~.labels label {
+  transform: translateY(-400%);
+}
+
+.contenedor form .labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenedor form .labels label {
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #2B2B38; */
+  background-color: var(--color-text-title);
+  z-index: 0;
+  transition: all 0.75s cubic-bezier(0.75, 0.25, 0, 1.05);
+}
+
+.contenedor form .labels label:nth-child(odd) {
+  /* background-color: #F5004F; */
+  background-color: var(--color-primary-light);
+  color: white !important;
+}
+
+.content {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 110px;
+}
+
+.content h1{
+  margin-bottom: 30px;
+}
+
+.content .block {
+  width: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 42px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.content .block span,
+.content .block span i {
+  margin: 0 42px;
+}
+
+.content .block span i {
+  margin-bottom: 22px;
+}
+
+.content .block span i:before {
+  font-size: 30px;
+}
+
+.Slide:nth-child(even) .content .block {
+  color: #717171;
+}
+
+.Slide p{
+  padding: 5px;
+}
+
+.Slide span{
+  font-weight: bold;
+}
+
+.icon {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon i {
+  font-size: 22px;
+}
+
+.icons{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#Slide5 .content .block {
+  flex-direction: column;
+}
+
+#Slide5 .content .block i {
+  margin: 0 12px;
+  vertical-align: middle;
+}
+
+.buttons-home{
+  width: 15%;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+  gap: 20px;
+}
+
+.buttons-home input {
+  display: none;
+}
+
+.buttons-home button {
+  background: var(--color-secundary-light);
+  border: 0;
+  color: var(--color-button-text);
+  width: 100%;
+  padding: 5px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.buttons-home button:nth-child(2) {
+  background-color: var(--color-secundary-light);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.buttons-home button:nth-child(2):hover {
+  cursor: pointer;
+  background: #04b453;
+}
+
+.buttons-home button:last-child {
+  background-color: var(--color-primary-light);
+  border: 1px solid white;
+}
+
+.buttons-home button:last-child:hover {
+  cursor: pointer;
+  background-color: var(--color-primary-dark);
+}
+
+/* Animação de fade_in */
+.fade_in {
+  opacity: 0;
+  animation: fadeInAnimation 0.5s forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px); /* Efeito opcional de deslizar */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Retorna à posição original */
+  }
+}
+
+/* Classe de ocultação para fade_out, se quiser uma transição de saída */
+.fade_out {
+  opacity: 1;
+  animation: fadeOutAnimation 0.5s forwards;
+}
+
+@keyframes fadeOutAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px); /* Deslizar para fora */
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.logout_icon{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon{
+  position: inherit;
+}
+
+.logout_icon span:hover{
+  cursor: pointer;
+}
+
+.spinner-container-home{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-text-title);
+}
+
+/* Slide de Progresso */
+
+.content-progresso{
+  width: 100%;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;  
+}
+.card{
+  width: 30%;
+  height: 100%;
+  background-color: var(--color-background);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 50px 0;
+}
+
+.card-header{
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
+  padding: 20px;
+}
+
+.card-header h3{
+  color: var(--color-text-title);
+}
+.card-header p{
+  color: var(--color-text-base);
+}
+
+.header-img{
+  width: 100px;
+  background-color: white;
+  height: 100px;
+  border-radius: 100px;
+  margin-left: 30px;
+}
+
+.user-name{
+  width: 70%;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  flex-direction: column;
+  padding-left: 30px;
+}
+
+.progress-bar{
+  width: 100%;
+  height: 20%;
+}
+
+.levels{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.level-title{
+  width: 100%;
+  color: var(--color-text-complement);
+  padding-bottom: 15px;
+}
+
+.levels-balls{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.ball{
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  background-color: var(--color-secundary-light);
+  color: white;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.card-button{
+  width: 100%;
+}
+
+.card-button input:nth-child(1){
+  display: none;
+}
+
+.card-button input{
+  background: var(--color-secundary-light);
+  border: 0;
+  color: var(--color-button-text);
+  width: 30%;
+  padding: 5px;
+  border-radius: 10px;
+  height: 60% !important;
+  transition: 0.2s;
+}
+
+.card-button input:hover{
+  cursor: pointer;
+  background-color: var(--color-secundary-dark);
+}
+
+.form-content input {
+  display: block !important;
+}
+
+.buttons-home input{
+  display: none !important;
+}

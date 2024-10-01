@@ -1,0 +1,85 @@
+:root {
+  font-size: 60%;
+
+  --color-background: #F0F0F7;
+  --color-primary-lighter: #8358E8;
+  --color-primary-light: #8358E8;
+  --color-primary: #6842C2;
+  --color-primary-dark: #6141AB;
+  --color-primary-darker: #573A99;
+  --color-secundary: #03873E;
+  --color-secundary-light: #04D361;
+  --color-secundary-dark: #026E33;
+  --color-title-in-primary: #FFFFFF;
+  --color-text-in-primary: #C4B6F0;
+  --color-text-title: #32264D;
+  --color-text-complement: #9C98A6;
+  --color-text-base: #6A6180;
+  --color-line-in-white: #E6E6F0;
+  --color-input-background: #F8F8FC;
+  --color-button-text: #FFFFFF;
+  --color-box-base: #FFFFFF;
+  --color-box-footer: #FAFAFC;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100vh;
+}
+
+body {
+  background: var(--color-background);
+  font-size: 16px;
+  font-weight: 100;
+  color: white;
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body,
+input,
+button,
+textarea {
+  font: 500 1.6rem Poppins;
+  color: var(--color-text-base);
+}
+
+.container {
+  width: 90vw;
+  max-width: 700px;
+}
+
+strong {
+  font-weight: 400;
+}
+
+h1 {
+  text-transform: uppercase;
+}
+
+ol {
+  text-align: left;
+  list-style-type: decimal;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s linear;
+}
+
+a:hover {
+  color: rebeccapurple;
+}

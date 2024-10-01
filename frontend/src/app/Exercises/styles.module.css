@@ -1,0 +1,633 @@
+.animation_control {
+  height: 100vh;
+}
+
+.contenedor {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: white;
+}
+
+.contenedor form {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.fade_in {
+  opacity: 0;
+  animation: fadeInAnimation 0.5s forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+    /* Efeito opcional de deslizar */
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    /* Retorna à posição original */
+  }
+}
+
+.fade_out {
+  opacity: 1;
+  animation: fadeOutAnimation 0.7s forwards;
+}
+
+@keyframes fadeOutAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+    /* Deslizar para fora */
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.card {
+  width: 100%;
+  margin-top: 90px;
+  height: 75%;
+  background-color: var(--color-primary-light);
+  border-radius: 15px;
+  align-items: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-top: 20px;
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  color: fff;
+  font-weight: 400;
+}
+
+.card p {
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.1rem;
+  padding: 30px;
+}
+
+.responses {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon_exercises {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  gap: 35px;
+  color: #f1f1f1;
+  height: 100px;
+}
+
+/* Controla as opções */
+.option {
+  border: 2px solid var(--color-primary-light);
+  background-color: var(--color-background);
+  padding: 10px;
+  cursor: pointer;
+  transition: border 0.2s ease, background-color 0.2s ease;
+  /* Adicionando transição suave */
+  margin-bottom: 15px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.option:hover {
+  background-color: #a7f1ca;
+  border: 2px solid #a7f1ca;
+}
+
+.option.active {
+  border: 2px solid var(--color-secundary-light);
+  background-color: #a7f1ca;
+}
+
+/* btn-1 */
+
+.btn_1 {
+  position: relative;
+  scale: 0.9;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 36px;
+  border: 4px solid;
+  border-color: transparent;
+  font-size: 18px;
+  background-color: transparent;
+  border-radius: 100px;
+  font-weight: 400;
+  color: #f9f9f9;
+  box-shadow: 0 0 0 2px #b1b1b1;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn_1 svg {
+  position: absolute;
+  width: 24px;
+  fill: #1e1e1e;
+  z-index: 9;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn_1 .arr_1 {
+  right: 16px;
+}
+
+.btn_1 .arr_2 {
+  left: -25%;
+}
+
+.btn_1 .circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-secundary-light);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn_1 .text {
+  position: relative;
+  z-index: 1;
+  transform: translateX(-12px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn_1:hover {
+  box-shadow: 0 0 0 12px transparent;
+  border-radius: 15px;
+}
+
+.btn_1:hover .arr_1 {
+  right: -25%;
+}
+
+.btn_1:hover .arr_2 {
+  left: 16px;
+}
+
+.btn_1:hover .text {
+  transform: translateX(12px);
+}
+
+.btn_1 svg {
+  fill: #f9f9f9;
+}
+
+.btn_1:hover svg {
+  fill: #f9f9f9;
+}
+
+.btn_1:active {
+  scale: 0.95;
+  box-shadow: 0 0 0 4px #8f44fd;
+}
+
+.btn_1:hover .circle {
+  width: 220px;
+  height: 220px;
+  opacity: 1;
+}
+
+.next_icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 90px;
+}
+
+.next_icon span {
+  font-size: 30px;
+  color: var(--color-primary-light);
+}
+
+.icon {
+  position: inherit;
+}
+
+.next_icon span:hover {
+  cursor: pointer;
+}
+
+/* Animação para o card entrar da direita */
+.slide_in_right {
+  opacity: 0;
+  animation: slideInRightAnimation 0.5s forwards;
+}
+
+@keyframes slideInRightAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(50%);
+    /* Card vem da direita */
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Retorna à posição original */
+  }
+}
+
+/* Animação para o card entrar da esquerda */
+.slide_in_left {
+  opacity: 0;
+  animation: slideInLeftAnimation 0.5s forwards;
+}
+
+@keyframes slideInLeftAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%);
+    /* Card vem da esquerda */
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Retorna à posição original */
+  }
+}
+
+/* Animação para o card sair para a direita */
+.slide_out_right {
+  opacity: 1;
+  animation: slideOutRightAnimation 0.5s forwards;
+}
+
+@keyframes slideOutRightAnimation {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Posição original */
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(50%);
+    /* Desliza para fora, para a direita */
+  }
+}
+
+/* Animação para o card sair para a esquerda */
+.slide_out_left {
+  opacity: 1;
+  animation: slideOutLeftAnimation 0.5s forwards;
+}
+
+@keyframes slideOutLeftAnimation {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Posição original */
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-50%);
+    /* Desliza para fora, para a esquerda */
+  }
+}
+
+.errorLabel {
+  font-size: 14px;
+  min-height: 25px; /* Garante que o espaço para a mensagem de erro seja fixo */
+}
+
+/* CSS do Modal */ 
+.modalContainer {
+  position: fixed;
+  display: table;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  z-index: 1;
+  color: #222222;
+}
+
+.modalContainer.active {
+  transform: scale(1);
+}
+
+.modalContainer.active .modalBackground {
+  background: rgba(0, 0, 0, 0);
+  animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.active .modalBackground .modal {
+  background-color: transparent;
+  animation: modalFadeIn 0.5s 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.active .modalBackground .modal h2,
+.modalContainer.active .modalBackground .modal p,
+.modalContainer.active .modalBackground .modal button {
+  opacity: 0;
+  position: relative;
+  animation: modalContentFadeIn 0.5s 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer button{
+  background: var(--color-secundary-light);
+  border: 0;
+  color: var(--color-button-text);
+  width: 40%;
+  padding: 5px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+  margin-top: 15px;
+}
+
+.modalContainer button:hover{
+  background: #03863e;
+  cursor: pointer;
+}
+
+.modalContainer.active .modalBackground .modal .modalSvg rect {
+  animation: sketchIn 0.5s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.out {
+  animation: quickScaleDown 0s 0.5s linear forwards;
+}
+
+.modalContainer.out .modalBackground {
+  animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.out .modalBackground .modal {
+  animation: modalFadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.out .modalBackground .modal h2,
+.modalContainer.out .modalBackground .modal p,
+.modalContainer.out .modalBackground .modal button {
+  animation: modalContentFadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.out .modalBackground .modal .modalSvg rect {
+  animation: sketchOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer .modalBackground {
+  display: table-cell;
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.modalContainer .modalBackground .modal {
+  background: #211f23;
+  width: 226px;
+  height: 162px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-weight: 300;
+  position: relative;
+}
+
+.modalContainer .modalBackground .modal h2 {
+  font-size: 25px;
+  line-height: 25px;
+  margin-bottom: 15px;
+  color: #f9f9f9;
+}
+
+.modalContainer .modalBackground .modal p {
+  font-size: 18px;
+  line-height: 22px;
+  color: rgb(249 249 249 / 50%);
+}
+
+.modalContainer .modalBackground .modal .modalSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.modalContainer .modalBackground .modal .modalSvg rect {
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-dasharray: 778;
+  stroke-dashoffset: 778;
+}
+
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+@keyframes modalFadeIn {
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: #201e22;
+  }
+}
+
+@keyframes modalContentFadeIn {
+  0% {
+    opacity: 0;
+    top: -20px;
+  }
+  100% {
+    opacity: 1;
+    top: 0;
+  }
+}
+
+@keyframes sketchIn {
+  0% {
+    stroke-dashoffset: 778;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes quickScaleDown {
+  0% {
+    transform: scale(1);
+  }
+  99.9% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes modalFadeOut {
+  0% {
+    background-color: #201e22;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes modalContentFadeOut {
+  0% {
+    opacity: 1;
+    top: 0px;
+  }
+  100% {
+    opacity: 0;
+    top: -20px;
+  }
+}
+
+@keyframes sketchOut {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 778;
+  }
+}
+
+/* CSS do Modal */ 
+
+.orderedContainer {
+  display: flex;
+  gap: 10px;
+  min-height: 50px; /* Ajuste conforme necessário */
+  border: 2px dashed #ccc;
+  padding: 10px;
+}
+
+.orderedOption {
+  border: 2px solid var(--color-primary-light);
+  background-color: var(--color-background);
+  padding: 10px;
+  border-radius: 5px;
+  animation: moveIn 0.5s ease forwards;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  color: var(--color-text-base);
+  transition: border 0.2s ease, background-color 0.2s ease;
+}
+
+.orderedOption:hover {
+  background-color: #f1f0a7;
+  border: 2px solid #f1f0a7;
+}
+
+.optionSquare {
+  border: 2px solid var(--color-primary-light);
+  background-color: var(--color-background);
+  /* Adicionando transição suave */
+  width: auto;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  transition: border 0.2s ease, background-color 0.2s ease;
+}
+
+.optionSquare:hover {
+  background-color: #a7f1ca;
+  border: 2px solid #a7f1ca;
+}
+
+.shuffledOptions{
+  display: flex;
+  width: 80%;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes moveIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.freeResponse{
+  width: 80%;
+}
+
+.freeResponse input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s; /* Animação suave */
+}
+
+.freeResponse input:focus {
+  border-color: #007bff; /* Cor ao focar */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra ao focar */
+  outline: none; /* Remove o contorno padrão do input */
+}
