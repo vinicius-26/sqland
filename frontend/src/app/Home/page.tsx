@@ -34,6 +34,42 @@ const Home: React.FC = () => {
 
   const [currentXP, setCurrentXP] = useState(0); // XP atual do usuário
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalAnimationClass, setModalAnimationClass] = useState('');
+
+  const [currentSlide, setCurrentSlide] = useState(1);
+  const totalSlides = 5; // Número total de slides
+
+  useEffect(() => {
+    const handleWheel = (event: WheelEvent) => {
+      if (event.deltaY > 0) {
+        // Scroll para baixo
+        if (currentSlide < totalSlides) {
+          setCurrentSlide(currentSlide + 1);
+        }
+      } else {
+        // Scroll para cima
+        if (currentSlide > 1) {
+          setCurrentSlide(currentSlide - 1);
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+    };
+  }, [currentSlide]);
+
+  useEffect(() => {
+    // Mudar o slide atual com base no estado currentSlide
+    const radioButton = document.getElementById(`Slide${currentSlide}`) as HTMLInputElement;
+    if (radioButton) {
+      radioButton.checked = true;
+    }
+  }, [currentSlide]);
+
   useEffect(() => {
     setIsMounted(true); // Componente montado no cliente
 
@@ -46,29 +82,15 @@ const Home: React.FC = () => {
       setLoggedIn(true);
 
       // Animação de entrada
-    setFormAnimationClass(''); // Limpa a animação antes de mudar
-    setTimeout(() => {
-      setFormAnimationClass('fade_in'); // Adiciona o efeito de fade-in
-      setIsFormVisible(true); // Exibe o formulário após o delay da animação
-    }, 1000); // Pequeno delay para suavizar a transição
+      setFormAnimationClass(''); // Limpa a animação antes de mudar
+      setTimeout(() => {
+        setFormAnimationClass('fade_in'); // Adiciona o efeito de fade-in
+        setIsFormVisible(true); // Exibe o formulário após o delay da animação
+      }, 1000); // Pequeno delay para suavizar a transição
     } else {
       router.push('/Login');
     }
   }, [router]);
-
-  const onExploreButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault(); // Previne qualquer comportamento padrão do botão
-
-    setTimeout(() => {
-      setFormAnimationClass('fade_out');
-    }, 200);
-
-    setTimeout(() => {
-      setIsFormVisible(false);
-      router.push('/Exercises');
-    }, 1000);
-
-  };
 
   const onLogOutButtonClick = () => {
     localStorage.removeItem('user');
@@ -89,6 +111,50 @@ const Home: React.FC = () => {
     }
   };
 
+  const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault(); // Previne qualquer comportamento padrão do botão
+    setModalVisible(true);
+    setModalAnimationClass('active');
+  };
+
+  const closeModal = () => {
+    setModalAnimationClass('out');
+    setTimeout(() => {
+      setModalVisible(false);
+
+    }, 1200); // O tempo deve ser igual à duração da animação
+  };
+
+  const onRevisionButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault(); // Previne qualquer comportamento padrão do botão
+    closeModal();
+
+    setTimeout(() => {
+      setFormAnimationClass('fade_out');
+    }, 200);
+
+    setTimeout(() => {
+      setIsFormVisible(false);
+      router.push('/Revision');
+    }, 1000);
+
+  };
+
+  const onExploreButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault(); // Previne qualquer comportamento padrão do botão
+    closeModal();
+
+    setTimeout(() => {
+      setFormAnimationClass('fade_out');
+    }, 200);
+
+    setTimeout(() => {
+      setIsFormVisible(false);
+      router.push('/Exercises');
+    }, 1000);
+
+  };
+
   return (
     <>
 
@@ -105,9 +171,49 @@ const Home: React.FC = () => {
         {loggedIn && <div>Your email address is {email}</div>}
       </div>
     </div> */}
+      {/* Modal 3 - Sketch */}
+      {modalVisible && (
+        // <div id="modal-container" className={`${styles.modalContainer} ${modalAnimationClass == 'out' ? styles.out : ''} ${modalAnimationClass == 'active' ? styles.active : ''}  `}>
+        <div id="modal-container" className={`${styles.modalContainer} ${styles.active} ${modalAnimationClass == 'out' ? styles.out : ''}`}>
+          <div className={styles.modalBackground} onClick={() => { closeModal() }}>
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <div>
+                <h2>Pronto para começar?</h2>
+              </div>
+
+              <div>
+                <p>Antes de mergulhar nos exercícios, que tal  <strong>revisar</strong> alguns conceitos importantes?</p>
+                <p>Seja qual for sua escolha, vamos juntos nessa jornada de aprendizado!</p>
+              </div>
+              <svg
+                className={styles.modalSvg}
+                xmlns="http://www.w3.org/2000/svg"
+                width="100%"
+                height="100%"
+                preserveAspectRatio="none"
+              >
+                <rect
+                  x="0"
+                  y="0"
+                  fill="none"
+                  width="226"
+                  height="162"
+                  rx="3"
+                  ry="3"
+                ></rect>
+              </svg>
+              <div className={styles.btn_modal}>
+                <button onClick={(e) => { onRevisionButtonClick(e) }}>Prefiro revisar antes de começar!</button>
+                <button onClick={(e) => { onExploreButtonClick(e) }}>Estou pronto para os desafios!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className={`${styles.animation_control} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
         <div className={styles.contenedor}>
+
           {loading ? (
             <div className={styles["spinner-container-home"]}>
               <TailSpin
@@ -124,7 +230,7 @@ const Home: React.FC = () => {
           ) : (
             <>
 
-              <form className={`${styles.form_content} ${ formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out}`}>
+              <form className={`${styles.form_content} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out}`}>
                 {/* Ícone "Home" */}
                 <input type="radio" id="Slide1" name="slider" title="Home" defaultChecked />
                 <input type="radio" id="Slide2" name="slider" title="Seu progresso" />
@@ -133,6 +239,13 @@ const Home: React.FC = () => {
                 <input type="radio" id="Slide5" name="slider" title="Sobre" />
                 <div className={styles.labels}>
                   <label className={styles.Slide} id="Slide1">
+                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                      <FontAwesomeIcon
+                        icon="database"
+                      />
+                      <span>SQLand</span>
+                    </div>
+
                     <div className={styles.content}>
                       <h1>
                         <strong>Bem-vindo ao</strong> SQLand, {fullName}
@@ -145,15 +258,22 @@ const Home: React.FC = () => {
 
                     <div className={styles["buttons-home"]}>
                       <input type="button" value="Explorar" />
-                      <button onClick={onExploreButtonClick}>Explorar</button>
+                      <button onClick={(e) => { openModal(e) }}>Explorar</button>
                       <button onClick={handleSobreClick}>Sobre</button>
                     </div>
                   </label>
                   <label className={styles.Slide} id="Slide2">
+                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                      <FontAwesomeIcon
+                        icon="database"
+                      />
+                      <span>SQLand</span>
+                    </div>
+
                     <div className={styles["content-progresso"]}>
                       <h1>Progresso</h1>
 
-                      <ProgressBar currentXpProp={currentXP} type={"home"} />
+                      {/* <ProgressBar currentXpProp={currentXP} type={"home"} /> */}
 
                       <div className={styles.card}>
                         <div className={styles["card-header"]}>
@@ -194,6 +314,13 @@ const Home: React.FC = () => {
                     </div>
                   </label>
                   <label className={styles.Slide} id="Slide3">
+                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                      <FontAwesomeIcon
+                        icon="database"
+                      />
+                      <span>SQLand</span>
+                    </div>
+
                     <div className={styles.content}>
                       <h1>Adding pages to this template</h1>
                       <div className={styles.block}>
@@ -205,6 +332,13 @@ const Home: React.FC = () => {
                     </div>
                   </label>
                   <label className={styles.Slide} id="Slide4">
+                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                      <FontAwesomeIcon
+                        icon="database"
+                      />
+                      <span>SQLand</span>
+                    </div>
+
                     <div className={styles.content}>
                       <h1>Perfil</h1>
                       {isMounted && (
@@ -224,6 +358,13 @@ const Home: React.FC = () => {
                     </div>
                   </label>
                   <label className={styles.Slide} id="Slide5">
+                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                      <FontAwesomeIcon
+                        icon="database"
+                      />
+                      <span>SQLand</span>
+                    </div>
+
                     <div className={styles.content}>
                       <h1>Sobre</h1>
                       <div className={styles.block}>

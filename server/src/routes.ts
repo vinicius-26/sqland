@@ -18,7 +18,15 @@ interface User {
   birthdate: string,
   pass: string,
   xp: number,
-  level: string
+  level: number
+}
+
+interface UserProgress {
+  id: Number,
+  user_id: Number,
+  question_id: number,
+  is_correct: boolean,
+  timestamp: Date
 }
 
 interface FirstTask {
@@ -27,6 +35,7 @@ interface FirstTask {
   initial_quests: string,
   id_atual_task: Number
 }
+
 
 //#region Autenticador
 // The auth endpoint that creates a new user record or logs a user based on an existing record
@@ -224,13 +233,13 @@ routes.post('/register-question', async (req, res) => {
     // Certifique-se de que 'options' é um objeto JSON se não for stringificado automaticamente
     const optionsToSave = typeof options === 'string' ? JSON.parse(options) : options;
 
-    await db('questions').insert({ 
-      question_text, 
+    await db('questions').insert({
+      question_text,
       question_id,
-      type, 
+      type,
       options: optionsToSave, // Armazena como JSON
-      correct_answer, 
-      difficulty, 
+      correct_answer,
+      difficulty,
       xp_reward
     });
 
@@ -251,15 +260,51 @@ routes.post('/questions', async (req, res) => {
 
     if (existingQuestion) {
       return res.status(201).json({ existingQuestion });
-    } else{
-      return res.status(404).json({ message: 'Questão não encontrada' });
+    } else {
+      return res.status(404).json({ message: 'Questões não encontradas' });
     }
-    
+
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(500).json({ message: 'Erro ao verificar a primeira tarefa do usuário: ', error: error.message });
+      return res.status(500).json({ message: 'Erro ao buscar as questões cadastradas: ', error: error.message });
     }
-    return res.status(500).json({ message: 'Erro desconhecido ao verificar a primeira tarefa do usuario' });
+    return res.status(500).json({ message: 'Erro desconhecido ao buscar as questões cadastradas.' });
+  }
+});
+
+// Recupera última questão respondida pelo usuário
+routes.post('/questions/:user_id/last-question', async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const lastQuestion = await db('user_progress')
+      .where({ user_id })
+      .orderBy('timestamp', 'desc')
+      .first();  // Seleciona apenas a primeira (última questão respondida)
+
+    if (lastQuestion) {
+      res.status(200).json(lastQuestion);
+    } else {
+      res.status(404).json({ message: 'Nenhuma questão encontrada para este usuário.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao recuperar a última questão.', error });
+  }
+});
+
+// Endpoint para encontrar todas as questões erradas
+routes.post('/questions/:user_id/wrong-questions', async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const wrongQuestions = await db('user_progress')
+      .where({ user_id, is_correct: false });
+
+    if (wrongQuestions.length > 0) {
+      res.status(200).json(wrongQuestions);
+    } else {
+      res.status(404).json({ message: 'Nenhuma questão errada encontrada para este usuário.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao recuperar as questões erradas.', error });
   }
 });
 //#endregion
@@ -267,25 +312,180 @@ routes.post('/questions', async (req, res) => {
 //#region XP and Levels
 // Endpoint para recuperar o XP e Nivel atual do usuário
 routes.post('/xp', async (req, res) => {
-  const { id } = req.body;
+  const { user_id } = req.body;
   try {
     let userXp = 0;
-    let userLevel = '';
+    let userLevel = 0;
+    let questionId = 0;
 
-    const existingUser: User = await db('users_login').where({ id }).first();
-    
+    const existingUser: User = await db('users_login').where({ id: user_id }).first();
+
+    const existingProgress: UserProgress = await db('user_progress')
+      .where({ user_id })
+      .orderBy('timestamp', 'desc')
+      .first();  // Seleciona apenas a primeira (última questão respondida)
+
     if (existingUser) {
       userXp = existingUser.xp;
       userLevel = existingUser.level;
     }
 
-    return res.status(201).json({ userXp, userLevel });
-    
+    if (existingProgress) {
+      questionId = existingProgress.question_id;
+    }
+
+    return res.status(201).json({ userXp, userLevel, questionId });
+
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(500).json({ message: 'Erro ao verificar a primeira tarefa do usuário: ', error: error.message });
+      return res.status(500).json({ message: 'Erro ao buscar o XP e Level do usuário: ', error: error.message });
     }
-    return res.status(500).json({ message: 'Erro desconhecido ao verificar a primeira tarefa do usuario' });
+    return res.status(500).json({ message: 'Erro desconhecido ao buscar o XP e Level do usuário.' });
+  }
+});
+
+// Registr o XP ao acertar uma questão
+routes.post('/register-xp', async (req, res) => {
+  const { user_id, question_id, xp_reward, is_correct } = req.body;
+
+  try {
+    let userXp = 0;
+    let userLevel = 0;
+
+    let newXp: number = 0;
+    let newUserLevel: number = 0;
+
+    const existingUser: User = await db('users_login').where({ id: user_id }).first();
+
+    if (existingUser) {
+      userXp = existingUser.xp;
+      userLevel = existingUser.level;
+    }
+
+    // Verifica se o XP do usuário não chegou ao máximo
+    if ((userXp + xp_reward) >= 100 && userLevel == 3) {
+
+      await db('users_login').where('id', '=', user_id).update({
+        xp: 100,
+        level: 3,
+      });
+
+      return res.status(201).json({ message: 'Máximo XP alcançado' });
+    }
+
+    // Calcula o XP total do usuário, desconsiderando o nivel atual ou a 'sobra'
+    let xpTotal = userXp + xp_reward;
+
+    // Calcula o novo Nivel do usuário com base no XP total
+    newUserLevel = Number(Math.trunc((xpTotal / 100))) + 1;
+
+    // Calcula o Novo XP do usuário
+    newXp = xpTotal;
+
+    // Maneira antiga de recuperar o XP
+    // if ((userXp + xp_reward) == 100) {
+    //   // Se o usuário chegou a exatamente 100 de XP, sobe o nível dele e coloca o XP em 0
+    //   newXp = 0;
+    //   newUserLevel = Number(userLevel) + 1;
+    // } else if ((userXp + xp_reward) >= 100) {
+    //   // Se o usuário chegou a mais de 100 de XP, sobe o nível dele e coloca o XP em 0 + o reward da questão
+    //   newXp = 0 + xp_reward;
+    //   newUserLevel = Number(userLevel) + 1;
+    // } else {
+    //   // Se não, mantém o mesmo nível e só aumenta o XP
+    //   newXp = userXp + xp_reward;
+    //   newUserLevel = userLevel;
+    // }
+
+    // Insere a tentativa 
+    await db('user_progress').insert({
+      user_id,
+      question_id,
+      is_correct: is_correct,
+      timestamp: Date.now()
+    });
+
+    // Atualiza o XP e o Nivel do usuário
+    await db('users_login').where('id', '=', user_id).update({
+      xp: newXp,
+      level: newUserLevel,
+    });
+
+    return res.status(201).json({ message: 'XP atualizado com sucesso' });
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: 'Erro ao atualizar o XP e Level do usuário: ', error: error.message });
+    }
+    return res.status(500).json({ message: 'Erro desconhecido ao atualizar o XP e Level do usuário.' });
+  }
+});
+
+routes.post('/reset-xp', async (req, res) => {
+  const { user_id } = req.body;
+  try {
+
+    // Remove todas as tentativas do usuário
+    await db('user_progress').where('user_id', '=', user_id).del();
+
+    // Atualiza o XP e o Nivel do usuário
+    await db('users_login').where('id', '=', user_id).update({
+      xp: 0,
+      level: 1,
+    });
+
+    return res.status(201).json({ message: 'Progresso zerado com sucesso' });
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: 'Erro ao zerar o XP e Level do usuário: ', error: error.message });
+    }
+    return res.status(500).json({ message: 'Erro desconhecido ao zerar o XP e Level do usuário.' });
+  }
+});
+//#endregion
+
+//#region 
+// Endpoint para registrar novas revisões
+routes.post('/register-revision', async (req, res) => {
+  const { revision_id, revision_text, title, options } = req.body;
+
+  try {
+    // Certifique-se de que 'options' é um objeto JSON se não for stringificado automaticamente
+    const optionsToSave = typeof options === 'string' ? JSON.parse(options) : options;
+
+    await db('revisions').insert({
+      revision_id,
+      revision_text,
+      title,
+      options: optionsToSave // Armazena como JSON
+    });
+
+    return res.status(201).json({ message: 'Revisão registrada com sucesso' });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: 'Erro ao registrar revisão: ', error: error.message });
+    }
+    return res.status(500).json({ message: 'Erro desconhecido ao registrar a revisão' });
+  }
+});
+
+routes.post('/revisions', async (req, res) => {
+  try {
+
+    const existingRevision = await db('revisions');
+
+    if (existingRevision) {
+      return res.status(201).json({ existingRevision });
+    } else {
+      return res.status(404).json({ message: 'Revisões não encontradas' });
+    }
+
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: 'Erro ao buscar as revisões: ', error: error.message });
+    }
+    return res.status(500).json({ message: 'Erro desconhecido ao ao buscar as revisões' });
   }
 });
 //#endregion

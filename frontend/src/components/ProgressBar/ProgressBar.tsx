@@ -5,10 +5,11 @@ import styles from './styles.module.css';
 
 export interface ProgressBarProps {
   currentXpProp: number;
+  levelProp: number;
   type: string;
 }
 
-export function ProgressBar({ currentXpProp, type }: ProgressBarProps) {
+export function ProgressBar({ currentXpProp, levelProp, type }: ProgressBarProps) {
 
   const [currentXP, setCurrentXP] = useState(0); // XP atual do usuário
   const [level, setLevel] = useState(1); // Nível do usuário
@@ -18,14 +19,18 @@ export function ProgressBar({ currentXpProp, type }: ProgressBarProps) {
     setCurrentXP(currentXpProp);
   }, [currentXpProp]);
 
-  const progressPercentage = (currentXP / maxXP) * 100; // Calcula a porcentagem da barra
+  useEffect(() => {
+    setLevel(levelProp);
+  }, [levelProp]);
+
+  const progressPercentage = ((currentXP / maxXP) * 100) % 100; // Calcula a porcentagem da barra
 
   return (
     <>
       {/* Barra de Progresso */}
       <div className={`${type == 'home' ? styles.progress_bar_main_home : styles.progress_bar_main_exercises}`}>
         <div className={styles.progress_bar_text}>
-          <p>{currentXP}</p>
+          <p>{currentXP % 100}</p>
           <h2>Nível {level}</h2>
           <p>{maxXP}</p>
         </div>

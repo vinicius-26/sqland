@@ -1,3 +1,22 @@
+.main_icon {
+  width: 100%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #fff;
+  padding: 12px;
+  font-size: 32px;
+  margin-right: 10px;
+}
+
+.main_icon span{
+  font-size: 20px;
+}
+
 /* The basic stuff to make it work */
 .contenedor {
   width: 100vw;
@@ -435,3 +454,175 @@
 .buttons-home input{
   display: none !important;
 }
+
+/* CSS DO MODAL */
+.modalContainer {
+  position: fixed;
+  display: table;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  z-index: 1;
+  color: #222222;
+}
+
+.modalContainer .modalBackground {
+  display: table-cell;
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.modalContainer .modalBackground .modal {
+  background: #211f23;
+  width: 50%;
+  height: 40%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 6px;
+  font-weight: 300;
+  position: relative;
+}
+
+.modalContainer .modalBackground .modal h2 {
+  font-size: 25px;
+  line-height: 25px;
+  margin-bottom: 15px;
+  color: #f9f9f9;
+}
+
+.modalContainer .modalBackground .modal p {
+  font-size: 18px;
+  line-height: 22px;
+  color: rgba(212, 212, 212, 0.959);
+  padding: 3px;
+}
+
+.modalContainer .modalBackground .modal p:first-child {
+  font-weight: 500;
+}
+
+.modalContainer .modalBackground .modal p:last-child {
+  font-weight: 200;
+}
+
+.modalContainer .modalBackground .modal strong{
+  font-weight: 800;
+  color: #fff;
+}
+
+.modalContainer .modalBackground .modal .modalSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  display: none;
+}
+
+.modalContainer .modalBackground .modal .modalSvg rect {
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-dasharray: 778;
+  stroke-dashoffset: 778;
+}
+
+.modalContainer.active {
+  transform: scaleY(0.01) scaleX(0);
+  animation: unfoldIn 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.modalContainer.active .modalBackground .modal {
+  transform: scale(0);
+  animation: zoomIn 0.5s 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.modalContainer.out {
+  transform: scale(1);
+  animation: unfoldOut 1s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.modalContainer.out .modalBackground .modal {
+  animation: zoomOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.btn_modal{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.btn_modal button{
+  background-color: (--color-text-in-primary);
+  color: rgb(54, 54, 54);
+  border: 0;
+  width: 40%;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+  margin-top: 15px;
+}
+
+.btn_modal button:hover{
+  background: #b1b1b1;
+  cursor: pointer;
+}
+
+.btn_modal button:last-child{
+  background-color: var(--color-primary-light);
+  color: var(--color-button-text);
+}
+
+.btn_modal button:last-child:hover{
+  background: var(--color-primary-dark);
+  cursor: pointer;
+}
+
+@keyframes unfoldIn {
+  0% {
+    transform: scaleY(0.005) scaleX(0);
+  }
+  50% {
+    transform: scaleY(0.005) scaleX(1);
+  }
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+}
+
+@keyframes unfoldOut {
+  0% {
+    transform: scaleY(1) scaleX(1);
+  }
+  50% {
+    transform: scaleY(0.005) scaleX(1);
+  }
+  100% {
+    transform: scaleY(0.005) scaleX(0);
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+/* CSS DO MODAL - FIM */ 

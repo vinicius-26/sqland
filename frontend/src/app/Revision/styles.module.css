@@ -1,0 +1,973 @@
+.main_icon {
+  width: 100%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 999;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--color-text-title);
+  padding: 12px;
+  font-size: 32px;
+}
+
+.main_icon span{
+  font-size: 20px;
+}
+
+/* Container da barra de progresso */
+.progress_bar_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: #e0e0e0;
+  /* Cor de fundo da barra */
+  z-index: 100;
+  /* Para que fique acima dos slides */
+}
+
+/* Barra de progresso */
+.progress_bar {
+  height: 100%;
+  width: 0;
+  background-color: #4caf50;
+  /* Cor da barra de progresso */
+  transition: width 0.75s cubic-bezier(0.75, 0.25, 0, 1.05);
+  /* Transição suave */
+}
+
+.btn_retornar {
+  position: absolute;
+  left: 70px;
+  background: transparent;
+  border: 1px solid #b1b1b1;
+  color: #dadada;
+  width: 20%;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+}
+
+.btn_retornar:hover {
+  background: #b1b1b1;
+  cursor: pointer;
+  color: #fff;
+}
+
+.animation_control {
+  height: 100vh;
+}
+
+.contenedor {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: white;
+}
+
+.contenedor form {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.fade_in {
+  opacity: 0;
+  animation: fadeInAnimation 0.5s forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+    /* Efeito opcional de deslizar */
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    /* Retorna à posição original */
+  }
+}
+
+.fade_out {
+  opacity: 1;
+  animation: fadeOutAnimation 0.7s forwards;
+}
+
+@keyframes fadeOutAnimation {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+    /* Deslizar para fora */
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.hidden_visibility {
+  visibility: hidden;
+}
+
+.card {
+  width: 100%;
+  height: 85%;
+  background-color: var(--color-text-title);
+  border-radius: 15px;
+  align-items: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-top: 20px;
+}
+
+.card h2 {
+  margin-bottom: 20px;
+  color: fff;
+  font-weight: 400;
+}
+
+.card p {
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.1rem;
+  padding: 10px;
+}
+
+/* 3 partes principais do card - Inicio */
+.card_title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card_content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 55%;
+  justify-content: center;
+  align-items: center;
+}
+
+.card_text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  text-align: justify;
+  margin-bottom: 20px;
+  line-height: 25px;
+}
+
+.card_text p {
+  font-weight: 300;
+}
+
+.card_text strong {
+  font-weight: 700;
+}
+
+.card_icons_buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 36px;
+}
+
+.card_icons_buttons span {
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 3px;
+}
+
+.btn_avancar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 3 partes principais do card - Fim */
+
+/* btn-1 */
+
+.btn_1 {
+  position: relative;
+  scale: 0.9;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 36px;
+  border: 4px solid;
+  border-color: transparent;
+  font-size: 18px;
+  background-color: transparent;
+  border-radius: 100px;
+  font-weight: 400;
+  color: #f9f9f9;
+  box-shadow: 0 0 0 2px #b1b1b1;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn_1 svg {
+  position: absolute;
+  width: 24px;
+  fill: #1e1e1e;
+  z-index: 9;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn_1 .arr_1 {
+  right: 16px;
+}
+
+.btn_1 .arr_2 {
+  left: -25%;
+}
+
+.btn_1 .circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-secundary-light);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn_1 .text {
+  position: relative;
+  z-index: 1;
+  transform: translateX(-12px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn_1:hover {
+  box-shadow: 0 0 0 12px transparent;
+  border-radius: 15px;
+}
+
+.btn_1:hover .arr_1 {
+  right: -25%;
+}
+
+.btn_1:hover .arr_2 {
+  left: 16px;
+}
+
+.btn_1:hover .text {
+  transform: translateX(12px);
+}
+
+.btn_1 svg {
+  fill: #f9f9f9;
+}
+
+.btn_1:hover svg {
+  fill: #f9f9f9;
+}
+
+.btn_1:active {
+  scale: 0.95;
+  box-shadow: 0 0 0 4px #8f44fd;
+}
+
+.btn_1:hover .circle {
+  width: 220px;
+  height: 220px;
+  opacity: 1;
+}
+
+.next_icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 90px;
+}
+
+.next_icon span {
+  font-size: 30px;
+  color: var(--color-text-base);
+}
+
+.icon {
+  position: inherit;
+}
+
+.next_icon span:hover {
+  cursor: pointer;
+}
+
+/* Animação para o card entrar da direita */
+.slide_in_right {
+  opacity: 0;
+  animation: slideInRightAnimation 0.5s forwards;
+}
+
+@keyframes slideInRightAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(50%);
+    /* Card vem da direita */
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Retorna à posição original */
+  }
+}
+
+/* Animação para o card entrar da esquerda */
+.slide_in_left {
+  opacity: 0;
+  animation: slideInLeftAnimation 0.5s forwards;
+}
+
+@keyframes slideInLeftAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%);
+    /* Card vem da esquerda */
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Retorna à posição original */
+  }
+}
+
+/* Animação para o card sair para a direita */
+.slide_out_right {
+  opacity: 1;
+  animation: slideOutRightAnimation 0.5s forwards;
+}
+
+@keyframes slideOutRightAnimation {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Posição original */
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(50%);
+    /* Desliza para fora, para a direita */
+  }
+}
+
+/* Animação para o card sair para a esquerda */
+.slide_out_left {
+  opacity: 1;
+  animation: slideOutLeftAnimation 0.5s forwards;
+}
+
+@keyframes slideOutLeftAnimation {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Posição original */
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-50%);
+    /* Desliza para fora, para a esquerda */
+  }
+}
+
+.errorLabel {
+  font-size: 14px;
+  min-height: 25px;
+  /* Garante que o espaço para a mensagem de erro seja fixo */
+}
+
+/* CSS do Modal */
+.modalContainer {
+  position: fixed;
+  display: table;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transform: scale(0);
+  z-index: 1;
+  color: #222222;
+}
+
+.modalContainer button {
+  background: var(--color-secundary-light);
+  border: 0;
+  color: var(--color-button-text);
+  width: 10%;
+  padding: 5px;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.modalContainer button:hover {
+  background: #03863e;
+  cursor: pointer;
+}
+
+.modal_button button:last-child {
+  background: grey;
+}
+
+.modal_button button:last-child:hover {
+  background: rgb(88, 88, 88);
+}
+
+.modalContainer .modalBackground {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modalContainer .modalBackground .modal {
+  background: #211f23;
+  width: 50%;
+  height: 75%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-weight: 300;
+  position: relative;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.modalContainer .modalBackground .modal h2 {
+  font-size: 25px;
+  line-height: 25px;
+  margin-bottom: 15px;
+  color: #f9f9f9;
+}
+
+.modalContainer .modalBackground .modal p {
+  font-size: 18px;
+  line-height: 30px;
+  color: var(--color-button-text);
+  padding: 10px;
+}
+
+.modalContainer .modalBackground .modal strong {
+  font-weight: 700;
+}
+
+.modalContainer .modalBackground .modal .modalSvg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  display: none;
+}
+
+.modalContainer .modalBackground .modal .modalSvg rect {
+  stroke: #fff;
+  stroke-width: 2px;
+  stroke-dasharray: 778;
+  stroke-dashoffset: 778;
+}
+
+/* // -- //  */
+
+.modalContainer.active {
+  transform: scale(1);
+}
+
+.modalContainer.active .modalBackground {
+  background: rgba(0, 0, 0, 0);
+  animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.active .modalBackground .modal {
+  opacity: 0;
+  animation: scaleUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.active+.content {
+  animation: scaleBack 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.out {
+  animation: quickScaleDown 0.85s linear forwards;
+}
+
+.modalContainer.out .modalBackground {
+  animation: fadeOut 1.0s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.out .modalBackground .modal {
+  animation: scaleDown 1.0s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.out+.content {
+  animation: scaleForward 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(0.8) translateY(1000px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleBack {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.85);
+  }
+}
+
+@keyframes quickScaleDown {
+  0% {
+    transform: scale(1);
+  }
+
+  99.9% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes scaleDown {
+  0% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.8) translateY(1000px);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleForward {
+  0% {
+    transform: scale(0.85);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* CSS do Modal */
+
+.lista_mercado {
+  width: 80%;
+  background-color: #fff;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.lista_mercado p {
+  color: black !important;
+  text-decoration: none;
+  border-bottom: 1px solid #211f23;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.tableContainer {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.tableContainer h2 {
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  color: #333 !important;
+  margin-bottom: 20px;
+}
+
+.stockTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Arial', sans-serif;
+}
+
+.stockTable th,
+.stockTable td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  color: #333;
+}
+
+.stockTable th {
+  background-color: var(--color-secundary);
+  color: white;
+  text-transform: uppercase;
+}
+
+.stockTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.stockTable tr:hover {
+  background-color: #ddd;
+}
+
+/* .stockTable td {
+  transition: background-color 0.2s ease-in;
+}
+
+.stockTable td:hover {
+  background-color: #e0f7fa;
+} */
+
+/* */
+
+.selectRevisionComands {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.selectComand {
+  width: 80%;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  color: #222222 !important;
+}
+
+.selectComand span:hover {
+  border-bottom: 1px solid #222222;
+}
+
+.tableSelectRevision {
+  width: 80%;
+  height: 80%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+.stockTableSelectRevision {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Arial', sans-serif;
+}
+
+.stockTableSelectRevision th,
+.stockTableSelectRevision td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  color: #333;
+  font-size: 12px;
+}
+
+.stockTableSelectRevision th {
+  background-color: rgb(117, 117, 117);
+  color: white;
+  text-transform: uppercase;
+}
+
+.stockTableSelectRevision tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.stockTableSelectRevision tr:hover {
+  background-color: #ddd;
+}
+
+/* .stockTableSelectRevision td {
+  transition: background-color 0.2s ease-in;
+}
+
+.stockTableSelectRevision td:hover {
+  background-color: #e0f7fa;
+} */
+
+.insertRevisionComands {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.insertComand {
+  width: 95%;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: #222222 !important;
+}
+
+.insertComand p {
+  padding: 12px !important;
+}
+
+.insertComand span {
+  font-size: 14px;
+}
+
+.insertComand span:hover {
+  border-bottom: 1px solid #222222;
+}
+
+.insertComand input {
+  padding: 4px 3px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  /* Animação suave */
+  margin-top: 10px;
+}
+
+.insertComand input:focus {
+  border-color: #007bff;
+  /* Cor ao focar */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  /* Sombra ao focar */
+  outline: none;
+  /* Remove o contorno padrão do input */
+}
+
+.insertComand button {
+  background: var(--color-secundary-light);
+  border: 0;
+  color: var(--color-button-text);
+  padding: 5px;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.insertComand button:hover {
+  background: #03863e;
+  cursor: pointer;
+}
+
+.errorLabel {
+  font-size: 14px;
+  min-height: 25px;
+  /* Garante que o espaço para a mensagem de erro seja fixo */
+}
+
+.updateRevisionComands {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.updateComand {
+  width: 80%;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  color: #222222 !important;
+}
+
+.updateComand span:hover {
+  border-bottom: 1px solid #222222;
+}
+
+.updateComand button {
+  background: var(--color-secundary-light);
+  border: 0;
+  color: var(--color-button-text);
+  padding: 5px;
+  border-radius: 5px;
+  transition: background 0.2s ease;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.updateComand button:hover {
+  background: #03863e;
+  cursor: pointer;
+}
+
+.subtitulo {
+  margin-top: 5px;
+  text-align: right;
+  width: 80%;
+}
+
+.subtitulo span {
+  border: 0 !important;
+  text-decoration: none;
+}
+
+.subtitulo span:hover {
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid #fff !important;
+  padding-bottom: 3px;
+}
+
+.updateComand input {
+  padding: 4px 3px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  /* Animação suave */
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.updateComand input:focus {
+  border-color: #007bff;
+  /* Cor ao focar */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  /* Sombra ao focar */
+  outline: none;
+  /* Remove o contorno padrão do input */
+}
+
+.icon_dica {
+  font-size: 36px;
+  position: absolute;
+  left: 90%;
+  top: 4%;
+}
+
+.icon_dica:hover {
+  cursor: pointer;
+}
+
+.modalContainer .modalBackground .modalDica {
+  background: #211f23;
+  width: 38%;
+  height: 30%;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  font-weight: 300;
+  position: relative;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.modalContainer .modalBackground .modalDica h2 {
+  font-size: 25px;
+  line-height: 25px;
+  margin-bottom: 15px;
+  color: #f9f9f9;
+}
+
+.modalContainer .modalBackground .modalDica p {
+  font-size: 18px;
+  line-height: 30px;
+  color: var(--color-button-text);
+  padding: 10px;
+}
+
+.modalContainer .modalBackground .modalDica strong {
+  font-weight: 700;
+}
+
+.modalContainer.active .modalBackground .modalDica {
+  opacity: 0;
+  animation: scaleUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalContainer.out .modalBackground .modalDica {
+  animation: scaleDown 1.0s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}

@@ -1,3 +1,21 @@
+.main_icon {
+  width: 100%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 999;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #fff;
+  padding: 12px;
+  font-size: 32px;
+}
+
+.main_icon span{
+  font-size: 20px;
+}
+
 .spinner_container_home {
   display: flex;
   flex-direction: column;
@@ -30,7 +48,7 @@
 }
 
 /* Animação de fade-in */
-.fade-in {
+.fade_in {
   opacity: 0;
   animation: fadeInAnimation 0.5s forwards;
 }
@@ -50,7 +68,7 @@
 }
 
 /* Classe de ocultação para fade-out, se quiser uma transição de saída */
-.fade-out {
+.fade_out {
   opacity: 1;
   animation: fadeOutAnimation 0.5s forwards;
 }

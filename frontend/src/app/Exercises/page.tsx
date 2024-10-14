@@ -3,10 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TailSpin } from 'react-loader-spinner'; // Spinner importado
-import stringSimilarity from 'string-similarity';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faArrowRight, faArrowLeft, faKeyboard, faDatabase } from '@fortawesome/free-solid-svg-icons';
-library.add(faArrowRight, faArrowLeft, faKeyboard, faDatabase);
+import { faDatabase } from '@fortawesome/free-solid-svg-icons';
+library.add(faDatabase);
 
 import styles from './styles.module.css';
 import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
@@ -38,6 +39,7 @@ const Exercises: React.FC = () => {
   const [activeButtons, setActiveButtons] = useState<string | null>(null);
 
   const [userXp, setUserXp] = useState(0);
+  const [userLevel, setUserLevel] = useState(0);
 
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -47,6 +49,31 @@ const Exercises: React.FC = () => {
   const [orderedOptions, setOrderedOptions] = useState<string[]>([]);
 
   const [freeResponse, setFreeResponse] = useState('');
+
+  const fetchUserXp = async (pUserId: number) => {
+    try {
+      const response = await fetch('http://localhost:3080/xp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: pUserId })
+      });
+      const data = await response.json();
+
+      setUserXp(data.userXp);
+      setUserLevel(data.userLevel);
+
+      setTimeout(() => {
+        setCurrentQuestionIndex(data.questionId);        
+      }, 500);
+
+    } catch (error) {
+      console.error('Erro ao buscar as questões:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true); // Componente montado no cliente
@@ -58,6 +85,8 @@ const Exercises: React.FC = () => {
       setEmail(user.email);
       setUserId(user.userId);
       setLoggedIn(true);
+
+      fetchUserXp(user.userId);
 
       // Animação de entrada
       setCardAnimationClass('');
@@ -72,22 +101,24 @@ const Exercises: React.FC = () => {
     }
   }, [router]);
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('http://localhost:3080/questions', { method: 'POST' });
-        const data = await response.json();
-        setQuestions(data.existingQuestion);  // Set the questions from the API
-      } catch (error) {
-        console.error('Erro ao buscar as questões:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchQuestions = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:3080/questions', { method: 'POST' });
+      const data = await response.json();
+      setQuestions(data.existingQuestion);  // Set the questions from the API
+    } catch (error) {
+      console.error('Erro ao buscar as questões:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchQuestions();
     setModalVisible(false);
+
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
@@ -114,7 +145,39 @@ const Exercises: React.FC = () => {
       }
 
       setModalVisible(false);
-      setUserXp(userXp + currentQuestion.xp_reward);
+
+      // Registrar XP aqui
+      const fetchRegisterUserXp = async () => {
+        try {
+          const response = await fetch('http://localhost:3080/register-xp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user_id: userId,
+              question_id: currentQuestion.question_id,
+              xp_reward: currentQuestion.xp_reward,
+              is_correct: true
+            })
+          });
+
+          const data = await response.json();
+
+          // Atualiza o XP do usuário
+          if (data.message === 'XP atualizado com sucesso') {
+            fetchUserXp(userId);
+          }
+
+        } catch (error) {
+          console.error('Erro ao buscar as questões:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchRegisterUserXp();
+
       onNextButtonClick();
 
     }, 500); // O tempo deve ser igual à duração da animação
@@ -139,17 +202,6 @@ const Exercises: React.FC = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCardAnimationClass('slide_in_right');
     }, 500);
-  };
-
-  const onPrevButtonClick = () => {
-    if (currentQuestionIndex > 0) {
-      setCardAnimationClass('slide_out_right');
-
-      setTimeout(() => {
-        setCurrentQuestionIndex(currentQuestionIndex - 1);
-        setCardAnimationClass('slide_in_left');
-      }, 500);
-    }
   };
 
   const handleOptionClick = (event: React.MouseEvent<HTMLButtonElement>, optionKey: string) => {
@@ -280,6 +332,70 @@ const Exercises: React.FC = () => {
     return array;
   };
 
+  const retornarPaginaInicial = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault(); // Previne qualquer comportamento padrão do botão
+    setTimeout(() => {
+      setFormAnimationClass('fade_out');
+    }, 200);
+
+    setLoading(true);
+
+    setTimeout(() => {
+      setIsFormVisible(false);
+      router.push('/Home');
+    }, 1000);
+  }
+
+  const resetarProgresso = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (userXp == 0 && userLevel == 1) {
+      return;
+    }
+
+    setLoading(true);
+
+    setFormAnimationClass('fade_out');
+
+    setTimeout(() => {
+      setIsFormVisible(false);
+    }, 700);
+
+    const resetProgress = async () => {
+      try {
+        const response = await fetch('http://localhost:3080/reset-xp', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_id: userId })
+        });
+        const data = await response.json();
+
+        if (data.message == 'Progresso zerado com sucesso') {
+          fetchUserXp(userId);
+        }
+
+      } catch (error) {
+        console.error('Erro ao buscar as questões:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    setTimeout(() => {
+      resetProgress();
+      fetchQuestions();
+      setActiveButtons(null);
+    }, 800);
+
+    setTimeout(() => {
+      setIsFormVisible(true);
+      setFormAnimationClass('fade_in');
+    }, 1200);
+  }
+
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
@@ -317,6 +433,13 @@ const Exercises: React.FC = () => {
 
       <div className={`${styles.animation_control} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
         <div className={styles.contenedor}>
+          <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+            <FontAwesomeIcon
+              icon="database"
+            />
+            <span>SQLand</span>
+          </div>
+
           {loading ? (
             <div className={styles["spinner-container-home"]}>
               <TailSpin
@@ -333,9 +456,27 @@ const Exercises: React.FC = () => {
           ) : (
             <>
 
-              <ProgressBar currentXpProp={userXp} type={"exercises"} />
+              <ProgressBar currentXpProp={userXp} levelProp={userLevel} type={"exercises"} />
 
               <form className={`${styles.form_content} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out}`}>
+                <div className={styles.btn_retorno}>
+                  <button onClick={(e) => { retornarPaginaInicial(e) }}>Voltar a tela inicial</button>
+
+                  <button className={styles.btn_2} onClick={(e) => resetarProgresso(e)}>
+                    <span className={styles.btn_2_bg}>
+                      <span className={styles.btn_2_bg_layers}>
+                        <span className={`${styles.btn_2_bg_layer} ${styles.btn_2_bg_layer_1} ${styles._purple}`}></span>
+                        <span className={`${styles.btn_2_bg_layer} ${styles.btn_2_bg_layer_2} ${styles._turquoise}`}></span>
+                        <span className={`${styles.btn_2_bg_layer} ${styles.btn_2_bg_layer_3} ${styles._yellow}`}></span>
+                      </span>
+                    </span>
+                    <span className={styles.btn_2_inner}>
+                      <span className={styles.btn_2_inner_static}>Resetar progresso</span>
+                      <span className={styles.btn_2_inner_hover}>Resetar progresso</span>
+                    </span>
+                  </button>
+
+                </div>
 
                 {/* {(isMounted && currentQuestionIndex != 0) && (
                   <>

@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { TailSpin } from 'react-loader-spinner'; // Spinner importado
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faRightFromBracket, faHome } from '@fortawesome/free-solid-svg-icons';
-library.add(faRightFromBracket, faHome);
+import { faDatabase } from '@fortawesome/free-solid-svg-icons';
+library.add(faDatabase);
 
 import styles from './styles.module.css';
 
@@ -162,6 +163,8 @@ const StartPage: React.FC = () => {
       .then((r) => r.json())
       .then((r) => {
         if (r.message === 'Primeira tarefa registrada com sucesso') {
+          setFormAnimationClass('fade_out');
+          
           setLoading(true); // Exibe o spinner
           setTimeout(() => {
             router.push('/Home');
@@ -211,8 +214,15 @@ const StartPage: React.FC = () => {
   return (
     <>
 
-    <div className={`${styles.animation_control} ${isFormVisible ? '' : styles.hidden}`}>
+      <div className={`${styles.animation_control} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
         <div className={styles.container}>
+        <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+            <FontAwesomeIcon
+              icon="database"
+            />
+            <span>SQLand</span>
+          </div>
+
           {loading ? (
 
             <div className={styles.contenedor}>
@@ -242,7 +252,7 @@ const StartPage: React.FC = () => {
                 ></div>
               </div>
               <div className={styles.contenedor}>
-              <form className={`${styles["form_content"]} ${formAnimationClass}`}>
+                <form className={`${styles.form_content} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out}`}>
                   <input type="radio" id="Slide1" name="slider" title="O que você quer aprender?" defaultChecked />
                   <input type="radio" id="Slide2" name="slider" title="Motivos para estudar" />
                   <input type="radio" id="Slide3" name="slider" title="Frequência diária" />
@@ -272,7 +282,7 @@ const StartPage: React.FC = () => {
                         ))}
 
                       <div className={styles.buttons_slide1}>
-                      <div className={styles.btn_6}>
+                        <div className={styles.btn_6}>
                           <a onClick={(event) => handleSlideChangeAnchor(event, 'next')} className={styles.btn_content} href="#">
                             <span className={styles.btn_title}>Próximo</span>
                             <span className={styles.icon_arrow}>

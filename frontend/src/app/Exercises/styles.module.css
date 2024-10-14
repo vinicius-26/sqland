@@ -1,5 +1,30 @@
+.main_icon {
+  width: 100%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 999;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--color-primary-light);
+  padding: 12px;
+  font-size: 32px;
+}
+
+.main_icon span{
+  font-size: 20px;
+}
+
 .animation_control {
   height: 100vh;
+}
+
+.form_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .contenedor {
@@ -64,7 +89,7 @@
 
 .card {
   width: 100%;
-  margin-top: 90px;
+  margin-top: 10px;
   height: 75%;
   background-color: var(--color-primary-light);
   border-radius: 15px;
@@ -332,10 +357,11 @@
 
 .errorLabel {
   font-size: 14px;
-  min-height: 25px; /* Garante que o espaço para a mensagem de erro seja fixo */
+  min-height: 25px;
+  /* Garante que o espaço para a mensagem de erro seja fixo */
 }
 
-/* CSS do Modal */ 
+/* CSS do Modal */
 .modalContainer {
   position: fixed;
   display: table;
@@ -370,7 +396,7 @@
   animation: modalContentFadeIn 0.5s 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
-.modalContainer button{
+.modalContainer button {
   background: var(--color-secundary-light);
   border: 0;
   color: var(--color-button-text);
@@ -381,7 +407,7 @@
   margin-top: 15px;
 }
 
-.modalContainer button:hover{
+.modalContainer button:hover {
   background: #03863e;
   cursor: pointer;
 }
@@ -465,6 +491,7 @@
   0% {
     background: rgba(0, 0, 0, 0);
   }
+
   100% {
     background: rgba(0, 0, 0, 0.7);
   }
@@ -474,6 +501,7 @@
   0% {
     background-color: transparent;
   }
+
   100% {
     background-color: #201e22;
   }
@@ -484,6 +512,7 @@
     opacity: 0;
     top: -20px;
   }
+
   100% {
     opacity: 1;
     top: 0;
@@ -494,6 +523,7 @@
   0% {
     stroke-dashoffset: 778;
   }
+
   100% {
     stroke-dashoffset: 0;
   }
@@ -503,9 +533,11 @@
   0% {
     transform: scale(1);
   }
+
   99.9% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(0);
   }
@@ -515,6 +547,7 @@
   0% {
     background: rgba(0, 0, 0, 0.7);
   }
+
   100% {
     background: rgba(0, 0, 0, 0);
   }
@@ -524,6 +557,7 @@
   0% {
     background-color: #201e22;
   }
+
   100% {
     background-color: transparent;
   }
@@ -534,6 +568,7 @@
     opacity: 1;
     top: 0px;
   }
+
   100% {
     opacity: 0;
     top: -20px;
@@ -544,17 +579,19 @@
   0% {
     stroke-dashoffset: 0;
   }
+
   100% {
     stroke-dashoffset: 778;
   }
 }
 
-/* CSS do Modal */ 
+/* CSS do Modal */
 
 .orderedContainer {
   display: flex;
   gap: 10px;
-  min-height: 50px; /* Ajuste conforme necessário */
+  min-height: 50px;
+  /* Ajuste conforme necessário */
   border: 2px dashed #ccc;
   padding: 10px;
 }
@@ -595,7 +632,7 @@
   border: 2px solid #a7f1ca;
 }
 
-.shuffledOptions{
+.shuffledOptions {
   display: flex;
   width: 80%;
   align-items: center;
@@ -607,13 +644,14 @@
     transform: translateY(-50px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
   }
 }
 
-.freeResponse{
+.freeResponse {
   width: 80%;
 }
 
@@ -623,11 +661,174 @@
   border: 2px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
-  transition: border-color 0.3s, box-shadow 0.3s; /* Animação suave */
+  transition: border-color 0.3s, box-shadow 0.3s;
+  /* Animação suave */
 }
 
 .freeResponse input:focus {
-  border-color: #007bff; /* Cor ao focar */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra ao focar */
-  outline: none; /* Remove o contorno padrão do input */
+  border-color: #007bff;
+  /* Cor ao focar */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  /* Sombra ao focar */
+  outline: none;
+  /* Remove o contorno padrão do input */
+}
+
+/* btn-2 */
+
+.btn_2 {
+  border: 0;
+  scale: 0.8;
+  display: flex;
+  justify-content: center;
+  height: 56px;
+  align-items: center;
+  border-radius: 9999px;
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fafaf6;
+  background-color: #8f44fd;
+  width: 20% !important;
+}
+
+.btn_2_item .btn_2_bg {
+  border-color: #8f44fd;
+  background-color: #8f44fd;
+}
+
+.btn_2_inner,
+.btn_2_inner_hover,
+.btn_2_inner_static {
+  pointer-events: none;
+  display: block;
+}
+
+.btn_2_inner {
+  position: relative;
+}
+
+.btn_2_inner_hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateY(70%);
+}
+
+.btn_2_bg {
+  overflow: hidden;
+  border-radius: 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(1);
+  transition: transform 1.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.btn_2_bg,
+.btn_2_bg_layer,
+.btn_2_bg_layers {
+  display: block;
+}
+
+.btn_2_bg_layers {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: -60%;
+  aspect-ratio: 1 / 1;
+  width: max(200%, 10rem);
+}
+
+.btn_2_bg_layer {
+  border-radius: 9999px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(0);
+}
+
+.btn_2_bg_layer._purple {
+  background-color: rgb(0 0 0 / 10%);
+}
+
+.btn_2_bg_layer._turquoise {
+  background-color: rgb(0 0 0 / 5%);
+}
+
+.btn_2_bg_layer._yellow {
+  --tw-bg-opacity: 1;
+  background-color: rgba(143, 68, 253, var(--tw-bg-opacity));
+}
+
+.btn_2:hover .btn_2_inner_static {
+  opacity: 0;
+  transform: translateY(-70%);
+  transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s linear;
+}
+
+.btn_2:hover .btn_2_inner_hover {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 1.4s cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 1.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.btn_2:hover .btn_2_bg_layer {
+  transition: transform 1.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s linear;
+}
+
+.btn_2:hover .btn_2_bg_layer_1 {
+  transform: scale(1);
+}
+
+.btn_2:hover .btn_2_bg_layer_2 {
+  transition-delay: 0.1s;
+  transform: scale(1);
+}
+
+.btn_2:hover .btn_2_bg_layer_3 {
+  transition-delay: 0.2s;
+  transform: scale(1);
+}
+
+.btn_retorno {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 90px;
+}
+
+.btn_retorno button {
+  background: transparent;
+  border: 2px solid #b1b1b1;
+  color: #7a7a7a;
+  width: 18%;
+  padding: 5px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+  margin-left: 12px;
+}
+
+.btn_retorno button:hover {
+  background: #b1b1b1;
+  cursor: pointer;
+  color: #fff;
+}
+
+.btn_retorno button:last-child {
+  border: 2px solid var(--color-primary-light);
+  color: var(--color-text-title);
+}
+
+.btn_retorno button:last-child:hover {
+  background: var(--color-primary-light);
+  cursor: pointer;
+  color: #fff;
 }
