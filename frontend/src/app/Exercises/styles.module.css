@@ -1,20 +1,63 @@
+/* Controle do HEADER */
 .main_icon {
   width: 100%;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 999;
+  position: absolute !important;
+  left: 0px;
+  top: 25px;
+  z-index: 1;
   display: flex;
-  gap: 10px;
   align-items: center;
-  color: var(--color-primary-light);
-  padding: 12px;
+  justify-content: space-between;
   font-size: 32px;
+  padding-left: 30px;
+  padding-right: 30px;
+  color: var(--color-primary-light);
 }
 
 .main_icon span{
-  font-size: 20px;
+  font-size: 20px !important;
 }
+
+.spinner_container_home{
+  width: 100vw;
+  height: 100vh;
+  top: 0px !important;
+  left: 0px !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  position: absolute !important;
+  z-index: 9999;
+  display: flex;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.sql_icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logout_icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logout_icon span{
+  font-weight: 300 !important;
+}
+
+.icon{
+  cursor: pointer;
+}
+
+/* Fim Controle do Header */
 
 .animation_control {
   height: 100vh;
@@ -143,7 +186,7 @@
   /* Adicionando transição suave */
   margin-bottom: 15px;
   border-radius: 10px;
-  width: 30%;
+  width: 45%;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
@@ -802,7 +845,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 90px;
+  margin-top: 110px;
 }
 
 .btn_retorno button {
@@ -831,4 +874,47 @@
   background: var(--color-primary-light);
   cursor: pointer;
   color: #fff;
+}
+
+@media (max-width: 1915px) {
+  .btn_retorno button {
+    width: 25%;
+  } 
+
+  .btn_2{
+    width: 25% !important;
+  }
+}
+
+@media (max-width: 1440px) {
+  .btn_retorno button {
+    font-size: 14px;
+  } 
+
+  .btn_2{
+    font-size: 16px !important;
+    height: 46px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .btn_retorno button {
+    font-size: 13px;
+  } 
+
+  .btn_2{
+    font-size: 15px !important;
+  }
+
+  .card p{
+    font-size: 14px;
+  }
+
+  .card h2{
+    font-size: 20px !important;
+  }
+
+  .btn_1{
+    scale: 0.78;
+  }
 }

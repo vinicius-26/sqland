@@ -6,12 +6,14 @@ import { useEffect } from 'react';
 import "./assets/styles/global.css";
 
 export default function MainPage() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const router = useRouter();
 
   // Define a função assíncrona fora do useEffect
   const verificaPrimeiroAcesso = async (userId: number): Promise<boolean> => {
-    try {
-      const response = await fetch('http://localhost:3080/verify-first-task', {
+    try { 
+      const response = await fetch(`${apiUrl}/verify-first-task`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: userId }),

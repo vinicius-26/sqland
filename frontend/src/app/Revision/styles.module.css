@@ -127,15 +127,15 @@
 
 .card {
   width: 100%;
-  height: 85%;
+  height: 90%;
   background-color: var(--color-text-title);
   border-radius: 15px;
   align-items: center;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
-  display: flex;
-  flex-direction: column;
   justify-content: space-around;
   padding-top: 20px;
+  display: grid;
+  grid-template-rows: auto auto auto auto auto;
 }
 
 .card h2 {
@@ -154,6 +154,7 @@
 /* 3 partes principais do card - Inicio */
 .card_title {
   width: 100%;
+  height: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -163,7 +164,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 55%;
+  height: 55%;
   justify-content: center;
   align-items: center;
 }
@@ -192,7 +193,6 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin-top: 20px;
   text-align: center;
   font-size: 36px;
 }
@@ -208,6 +208,7 @@
 
 .btn_avancar {
   width: 100%;
+  height: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -468,8 +469,8 @@
 
 .modalContainer .modalBackground .modal {
   background: #211f23;
-  width: 50%;
-  height: 75%;
+  width: 60%;
+  height: 85%;
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
@@ -970,4 +971,76 @@
 
 .modalContainer.out .modalBackground .modalDica {
   animation: scaleDown 1.0s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.modalDica button{
+  width: 20%;
+}
+
+@media (max-width: 1910px) {
+  .contenedor form{
+    width: 65%;
+  }
+
+  .insertComand input{
+    font-size: 12px;
+  }
+
+  .card_title h2{
+    font-size: 20px;
+  }
+
+  .card_title h2{
+    font-size: 20px;
+  }
+
+  .card_text p{
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1572px) {
+  .contenedor form{
+    width: 70%;
+  }
+
+  .btn_retornar{
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .contenedor form{
+    width: 70%;
+  }
+
+  .card_text p{
+    font-size: 14px;
+    line-height: 23px;
+  }
+
+  .card_title h2{
+    font-size: 20px;
+  }
+
+  .btn_retornar{
+    width: 20%;
+    margin-bottom: 35px;
+  }
+
+  .btn_1{
+    margin-bottom: 25px !important;
+  }
+
+}
+
+@media (max-width: 1280px) {
+  .card_text p{
+    font-size: 13px;
+    line-height: 23px;
+  }
+
+  .card_title h2{
+    font-size: 18px;
+  }
 }

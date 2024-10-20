@@ -19,6 +19,7 @@ import { TailSpin } from 'react-loader-spinner'; // Spinner importado
 import styles from './Main.module.css';
 
 const MainLogin: React.FC = () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const router = useRouter();
 
@@ -232,7 +233,7 @@ const MainLogin: React.FC = () => {
   };
 
   const checkAccountExists = (callback: (exists: boolean) => void) => {
-    fetch('http://localhost:3080/check-account', {
+    fetch(`${apiUrl}/check-account`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -249,8 +250,7 @@ const MainLogin: React.FC = () => {
     try {
 
       const id = userId;
-
-      const response = await fetch('http://localhost:3080/verify-first-task', {
+      const response = await fetch(`${apiUrl}/verify-first-task`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id }),
@@ -272,7 +272,8 @@ const MainLogin: React.FC = () => {
 
   const logIn = async () => {
     try {
-      const response = await fetch('http://localhost:3080/auth', {
+
+      const response = await fetch(`${apiUrl}/auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -316,7 +317,7 @@ const MainLogin: React.FC = () => {
         return;
       }
       else {
-        fetch('http://localhost:3080/register', {
+        fetch(`${apiUrl}/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ full_name: newFullName, email: newEmail, birthdate: newBirthDate, password: newPassword }),
@@ -484,10 +485,10 @@ const MainLogin: React.FC = () => {
                           <div className={styles.login_title}>
                             <h1>Bem-vindo ao SQLand</h1>
                             <p>Descubra o Mundo do SQL e Bancos de Dados</p>
-                            <Image
+                            <Image 
                               src={logoPrincipal}
                               alt="Logo"
-                              className="object-cover cursor-pointer"
+                              className={styles.logo_principal}
                               layout="intrinsic"
                             />
                           </div>
@@ -685,13 +686,13 @@ const MainLogin: React.FC = () => {
                               </div>
                             </div>
 
-                            <div className={styles.login_title}>
+                            <div className={styles.register_title}>
                               <h1>Cadastrar uma nova conta</h1>
                               <p>Que bom que você irá se juntar ao SQLand!</p>
-                              <Image
+                              <Image className={styles.register_img}
                                 src={logoSecundaria}
                                 alt="Logo"
-                                className="object-cover cursor-pointer"
+                                // className="object-cover cursor-pointer"
                                 layout="intrinsic"
                               />
                             </div>

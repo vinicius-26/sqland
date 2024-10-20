@@ -13,6 +13,8 @@ import styles from './styles.module.css';
 
 const StartPage: React.FC = () => {
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const router = useRouter();
 
   const [email, setEmail] = useState('');
@@ -155,7 +157,7 @@ const StartPage: React.FC = () => {
       setErrorMessageSlide3('');
     }
 
-    fetch('http://localhost:3080/register-first-task', {
+    fetch(`${apiUrl}/register-first-task`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: userId }),

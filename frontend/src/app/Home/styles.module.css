@@ -1,22 +1,3 @@
-.main_icon {
-  width: 100%;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  color: #fff;
-  padding: 12px;
-  font-size: 32px;
-  margin-right: 10px;
-}
-
-.main_icon span{
-  font-size: 20px;
-}
-
 /* The basic stuff to make it work */
 .contenedor {
   width: 100vw;
@@ -626,3 +607,23 @@
 }
 
 /* CSS DO MODAL - FIM */ 
+
+@media (max-width: 1440px) {
+  .modalContainer .modalBackground .modal p { 
+    font-size: 16px;
+  }
+
+  .btn_modal button { 
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .modalContainer .modalBackground .modal p { 
+    font-size: 15px;
+  }
+
+  .btn_modal button { 
+    font-size: 13px;
+  }
+}

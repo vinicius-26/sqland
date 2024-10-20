@@ -11,8 +11,10 @@ library.add(faDatabase);
 
 import styles from './styles.module.css';
 import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
+import { Header } from '@/components/Header/Header';
 
 const Exercises: React.FC = () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const router = useRouter();
 
@@ -52,7 +54,7 @@ const Exercises: React.FC = () => {
 
   const fetchUserXp = async (pUserId: number) => {
     try {
-      const response = await fetch('http://localhost:3080/xp', {
+      const response = await fetch(`${apiUrl}/xp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +67,7 @@ const Exercises: React.FC = () => {
       setUserLevel(data.userLevel);
 
       setTimeout(() => {
-        setCurrentQuestionIndex(data.questionId);        
+        setCurrentQuestionIndex(data.questionId);
       }, 500);
 
     } catch (error) {
@@ -104,7 +106,7 @@ const Exercises: React.FC = () => {
   const fetchQuestions = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3080/questions', { method: 'POST' });
+      const response = await fetch(`${apiUrl}/questions`, { method: 'POST' });
       const data = await response.json();
       setQuestions(data.existingQuestion);  // Set the questions from the API
     } catch (error) {
@@ -149,7 +151,7 @@ const Exercises: React.FC = () => {
       // Registrar XP aqui
       const fetchRegisterUserXp = async () => {
         try {
-          const response = await fetch('http://localhost:3080/register-xp', {
+          const response = await fetch(`${apiUrl}/register-xp`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -364,7 +366,7 @@ const Exercises: React.FC = () => {
 
     const resetProgress = async () => {
       try {
-        const response = await fetch('http://localhost:3080/reset-xp', {
+        const response = await fetch(`${apiUrl}/reset-xp`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -388,6 +390,7 @@ const Exercises: React.FC = () => {
       resetProgress();
       fetchQuestions();
       setActiveButtons(null);
+      setFreeResponse('');
     }, 800);
 
     setTimeout(() => {
@@ -395,6 +398,17 @@ const Exercises: React.FC = () => {
       setFormAnimationClass('fade_in');
     }, 1200);
   }
+
+  const onLogOutButtonClick = () => {
+    localStorage.removeItem('user');
+    setLoggedIn(false);
+
+    setLoading(true); // Exibe o spinner
+    setTimeout(() => {
+      router.push('/Login');
+    }, 1000); // Simulando um tempo de delay (1 segundo)
+
+  };
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -433,15 +447,35 @@ const Exercises: React.FC = () => {
 
       <div className={`${styles.animation_control} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
         <div className={styles.contenedor}>
-          <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+          {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
             <FontAwesomeIcon
               icon="database"
             />
             <span>SQLand</span>
+          </div> */}
+
+          <div className={styles.main_icon}>
+            <div className={styles.sql_icon}>
+              <FontAwesomeIcon
+                icon="database"
+              />
+              <span>SQLand</span>
+            </div>
+
+            <div className={styles.logout_icon}>
+              <span>Sair</span>
+              <span>
+                <FontAwesomeIcon
+                  className={styles.icon}
+                  icon="right-from-bracket"
+                  onClick={() => onLogOutButtonClick()}
+                />
+              </span>
+            </div>
           </div>
 
           {loading ? (
-            <div className={styles["spinner-container-home"]}>
+            <div className={styles.spinner_container_home}>
               <TailSpin
                 visible={true}
                 height="80"

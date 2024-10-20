@@ -11,8 +11,10 @@ import { faArrowRight, faArrowLeft, faKeyboard, faDatabase, faList, faStore, faC
 library.add(faArrowRight, faArrowLeft, faKeyboard, faDatabase, faList, faStore, faCircleQuestion);
 
 import styles from './styles.module.css';
+import { Header } from '@/components/Header/Header';
 
 const Revision: React.FC = () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const router = useRouter();
 
@@ -117,7 +119,8 @@ const Revision: React.FC = () => {
     const fetchRevisions = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:3080/revisions', { method: 'POST' });
+
+        const response = await fetch(`${apiUrl}/revisions`, { method: 'POST' });
         const data = await response.json();
 
         setRevisions(data.existingRevision);  // Set the questions from the API
@@ -521,12 +524,14 @@ const Revision: React.FC = () => {
             ></div>
           </div>
 
-          <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+          {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
             <FontAwesomeIcon
               icon="database"
             />
             <span>SQLand</span>
-          </div>
+          </div> */}
+
+          <Header color="purple_dark" />
 
           {loading ? (
             <div className={styles["spinner-container-home"]}>
@@ -802,28 +807,30 @@ const Revision: React.FC = () => {
                   {/* Botão de Avançar */}
                   <div className={styles.btn_avancar}>
                     <button onClick={(e) => { retornarPaginaInicial(e) }} className={styles.btn_retornar}>Página inicial</button>
-                    <button className={styles.btn_1} onClick={(event) => handleValidateClick(event)}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={styles.arr_2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
-                        ></path>
-                      </svg>
-                      <span className={styles.text}> {currentRevisionIndex === 6 ? 'Finalizar' : 'Próximo'}</span>
-                      <span className={styles.circle}></span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={styles.arr_1}
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
-                        ></path>
-                      </svg>
-                    </button>
+                    {currentRevisionIndex === 6 &&
+                      <button className={styles.btn_1} onClick={(event) => handleValidateClick(event)}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={styles.arr_2}
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
+                          ></path>
+                        </svg>
+                        <span className={styles.text}> {currentRevisionIndex === 6 ? 'Finalizar' : 'Próximo'}</span>
+                        <span className={styles.circle}></span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={styles.arr_1}
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
+                          ></path>
+                        </svg>
+                      </button>
+                    }
                   </div>
                 </div>
 

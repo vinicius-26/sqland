@@ -1,0 +1,68 @@
+.color_white{
+  color: #fff;
+}
+
+.color_purple_dark{
+  color: var(--color-text-title);
+}
+
+.color_purple_light{
+  color: var(--color-primary-light);
+}
+
+.main_icon {
+  width: 100%;
+  position: absolute !important;
+  left: 0px;
+  top: 25px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 32px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.main_icon span{
+  font-size: 20px !important;
+}
+
+.spinner_container_home{
+  width: 100vw;
+  height: 100vh;
+  top: 0px !important;
+  left: 0px !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  position: absolute !important;
+  z-index: 9999;
+  display: flex;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.sql_icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logout_icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logout_icon span{
+  font-weight: 300 !important;
+}
+
+.icon{
+  cursor: pointer;
+}

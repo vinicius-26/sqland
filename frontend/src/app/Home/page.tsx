@@ -5,15 +5,17 @@ import { useRouter } from 'next/navigation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faRightFromBracket, faHome } from '@fortawesome/free-solid-svg-icons';
-library.add(faRightFromBracket, faHome);
+import { faRightFromBracket, faHome, faDatabase } from '@fortawesome/free-solid-svg-icons';
+library.add(faRightFromBracket, faHome, faDatabase);
 
 import { TailSpin } from 'react-loader-spinner'; // Spinner importado
 
 import styles from './styles.module.css';
 import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
+import { Header } from '@/components/Header/Header';
 
 const Home: React.FC = () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const router = useRouter();
 
@@ -136,7 +138,7 @@ const Home: React.FC = () => {
     setTimeout(() => {
       setIsFormVisible(false);
       router.push('/Revision');
-    }, 1000);
+    }, 1500);
 
   };
 
@@ -151,7 +153,7 @@ const Home: React.FC = () => {
     setTimeout(() => {
       setIsFormVisible(false);
       router.push('/Exercises');
-    }, 1000);
+    }, 1500);
 
   };
 
@@ -239,12 +241,26 @@ const Home: React.FC = () => {
                 <input type="radio" id="Slide5" name="slider" title="Sobre" />
                 <div className={styles.labels}>
                   <label className={styles.Slide} id="Slide1">
-                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
-                      <FontAwesomeIcon
-                        icon="database"
-                      />
-                      <span>SQLand</span>
-                    </div>
+                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                      <div>
+                        <FontAwesomeIcon
+                          icon="database"
+                        />
+                        <span>SQLand</span>
+                      </div>
+
+                      <div className="">
+                        <p>Sair</p>
+                        <span>
+                          <FontAwesomeIcon
+                            className={styles.icon}
+                            icon="right-from-bracket"
+                            onClick={() => onLogOutButtonClick()}
+                          />
+                        </span>
+                      </div>
+                    </div> */}
+                    <Header color="white"/>
 
                     <div className={styles.content}>
                       <h1>
@@ -263,12 +279,14 @@ const Home: React.FC = () => {
                     </div>
                   </label>
                   <label className={styles.Slide} id="Slide2">
-                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
                       <FontAwesomeIcon
                         icon="database"
                       />
                       <span>SQLand</span>
-                    </div>
+                    </div> */}
+
+                    <Header color="white"/>
 
                     <div className={styles["content-progresso"]}>
                       <h1>Progresso</h1>
@@ -314,12 +332,14 @@ const Home: React.FC = () => {
                     </div>
                   </label>
                   <label className={styles.Slide} id="Slide3">
-                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
                       <FontAwesomeIcon
                         icon="database"
                       />
                       <span>SQLand</span>
-                    </div>
+                    </div> */}
+
+                    <Header color="white"/>
 
                     <div className={styles.content}>
                       <h1>Adding pages to this template</h1>
@@ -332,12 +352,14 @@ const Home: React.FC = () => {
                     </div>
                   </label>
                   <label className={styles.Slide} id="Slide4">
-                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
                       <FontAwesomeIcon
                         icon="database"
                       />
                       <span>SQLand</span>
-                    </div>
+                    </div> */}
+
+                    <Header color="white"/>
 
                     <div className={styles.content}>
                       <h1>Perfil</h1>
@@ -358,12 +380,13 @@ const Home: React.FC = () => {
                     </div>
                   </label>
                   <label className={styles.Slide} id="Slide5">
-                    <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
+                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
                       <FontAwesomeIcon
                         icon="database"
                       />
                       <span>SQLand</span>
-                    </div>
+                    </div> */}
+                    <Header color="white"/>
 
                     <div className={styles.content}>
                       <h1>Sobre</h1>

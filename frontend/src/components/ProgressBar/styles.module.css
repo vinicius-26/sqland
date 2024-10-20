@@ -19,7 +19,7 @@
   background-color: transparent;
   z-index: 100;
   position: absolute;
-  top: 40px;
+  top: 50px;
   flex-direction: column;
   color: var(--color-primary-light);
 }
