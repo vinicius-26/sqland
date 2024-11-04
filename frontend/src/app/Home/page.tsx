@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faRightFromBracket, faHome, faDatabase } from '@fortawesome/free-solid-svg-icons';
-library.add(faRightFromBracket, faHome, faDatabase);
+import { faHome, faListCheck, faMedal } from '@fortawesome/free-solid-svg-icons';
+library.add(faHome, faListCheck, faMedal);
 
+import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
+import { Header } from '@/components/Header/Header';
 import { TailSpin } from 'react-loader-spinner'; // Spinner importado
 
 import styles from './styles.module.css';
-import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
-import { Header } from '@/components/Header/Header';
 
 const Home: React.FC = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -21,6 +21,7 @@ const Home: React.FC = () => {
 
   const [email, setEmail] = useState('');
   const [fullName, setFullName] = useState('');
+  const [userId, setUserId] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [loading, setLoading] = useState(false); // Estado do spinner
@@ -34,13 +35,40 @@ const Home: React.FC = () => {
   // Estado para verificar se o componente está montado no cliente
   const [isMounted, setIsMounted] = useState(false);
 
-  const [currentXP, setCurrentXP] = useState(0); // XP atual do usuário
+  const [userXp, setUserXp] = useState(0);
+  const [userLevel, setUserLevel] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalAnimationClass, setModalAnimationClass] = useState('');
 
   const [currentSlide, setCurrentSlide] = useState(1);
   const totalSlides = 5; // Número total de slides
+
+  const [navSlide, setNavSlide] = useState('');
+
+  const fetchUserXp = async (pUserId: number) => {
+    try {
+      const response = await fetch(`${apiUrl}/xp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: pUserId })
+      });
+      const data = await response.json();
+
+      setUserXp(data.userXp);
+      setUserLevel(data.userLevel);
+
+      setCurrentQuestionIndex(data.questionId);
+
+    } catch (error) {
+      console.error('Erro ao buscar as questões:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
@@ -81,6 +109,7 @@ const Home: React.FC = () => {
     if (user && user.email) {
       setEmail(user.email);
       setFullName(user.fullName);
+      setUserId(user.userId);
       setLoggedIn(true);
 
       // Animação de entrada
@@ -92,29 +121,40 @@ const Home: React.FC = () => {
     } else {
       router.push('/Login');
     }
+
+    fetchUserXp(user.userId);
   }, [router]);
 
-  const onLogOutButtonClick = () => {
-    localStorage.removeItem('user');
-    setLoggedIn(false);
-
-    setLoading(true); // Exibe o spinner
-    setTimeout(() => {
-      router.push('/Login');
-    }, 1000); // Simulando um tempo de delay (1 segundo)
-
-  };
-
-  const handleSobreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault(); // Previne qualquer comportamento padrão do botão
-    const radioButton = document.getElementById('Slide5') as HTMLInputElement;
-    if (radioButton) {
-      radioButton.checked = true; // Simula o clique
+  useEffect(() => {
+    if (userXp == 300 && userLevel == 3) {
+      openModal();
     }
+  }, [userXp])
+
+  const handleNavHomeClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault(); // Previne qualquer comportamento padrão do botão
+
+    setNavSlide('home');
+
+    // const radioButton = document.getElementById('Slide1') as HTMLInputElement;
+    // if (radioButton) {
+    //   radioButton.checked = true; // Simula o clique
+    // }
   };
 
-  const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleNavProgressClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault(); // Previne qualquer comportamento padrão do botão
+
+    setNavSlide('progress');
+
+    // const radioButton = document.getElementById('Slide2') as HTMLInputElement;
+    // if (radioButton) {
+    //   radioButton.checked = true; // Simula o clique
+    // }
+  };
+
+  const openModal = () => {
+    // event.preventDefault(); // Previne qualquer comportamento padrão do botão
     setModalVisible(true);
     setModalAnimationClass('active');
   };
@@ -142,9 +182,32 @@ const Home: React.FC = () => {
 
   };
 
-  const onExploreButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onExploreButtonClick = (event: React.MouseEvent<HTMLInputElement>) => {
     event.preventDefault(); // Previne qualquer comportamento padrão do botão
-    closeModal();
+
+    // Reseta o progresso do usuário para iniciar os exercicios novamente
+    const resetProgress = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/reset-xp`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_id: userId })
+        });
+        const data = await response.json();
+
+      } catch (error) {
+        console.error('Erro ao buscar as questões:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userXp == 300 && userLevel == 3) {
+      resetProgress();
+    }
+
 
     setTimeout(() => {
       setFormAnimationClass('fade_out');
@@ -160,53 +223,36 @@ const Home: React.FC = () => {
   return (
     <>
 
-      {/* <div classNameNameName="mainContainer">
-      <div classNameNameName="titleContainer">Welcome!</div>
-      <div>This is the home page.</div>
-      <div classNameNameName="buttonContainer">
-        <input
-          classNameNameName="inputButton"
-          type="button"
-          onClick={onButtonClick}
-          value={loggedIn ? 'Log out' : 'Log in'}
-        />
-        {loggedIn && <div>Your email address is {email}</div>}
-      </div>
-    </div> */}
       {/* Modal 3 - Sketch */}
       {modalVisible && (
         // <div id="modal-container" className={`${styles.modalContainer} ${modalAnimationClass == 'out' ? styles.out : ''} ${modalAnimationClass == 'active' ? styles.active : ''}  `}>
         <div id="modal-container" className={`${styles.modalContainer} ${styles.active} ${modalAnimationClass == 'out' ? styles.out : ''}`}>
+          <div className={styles.firework}></div>
+          <div className={styles.firework}></div>
+          <div className={styles.firework}></div>
+
           <div className={styles.modalBackground} onClick={() => { closeModal() }}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
               <div>
-                <h2>Pronto para começar?</h2>
+                <h2>Parabéns, {fullName}!</h2>
               </div>
 
+              <span>
+                <FontAwesomeIcon
+                  icon="medal"
+                />
+              </span>
+
               <div>
-                <p>Antes de mergulhar nos exercícios, que tal  <strong>revisar</strong> alguns conceitos importantes?</p>
-                <p>Seja qual for sua escolha, vamos juntos nessa jornada de aprendizado!</p>
+                <p>Você conquistou todos os níveis de SQL como um verdadeiro Data Master!</p>
+                <p>Com muito empenho e curiosidade, você navegou pelos comandos, explorou tabelas e agora está mais que preparado para enfrentar qualquer desafio de dados que vier pela frente.</p>
+                <p>Este certificado marca a sua dedicação e paixão por SQL – habilidades que abrem portas no universo de dados. Continue praticando e explorando, porque esse é só o começo da sua jornada como um especialista em Banco de Dados!</p>
+                <p></p>
+                <strong>Orgulhosamente, o time do SQLand!</strong>
               </div>
-              <svg
-                className={styles.modalSvg}
-                xmlns="http://www.w3.org/2000/svg"
-                width="100%"
-                height="100%"
-                preserveAspectRatio="none"
-              >
-                <rect
-                  x="0"
-                  y="0"
-                  fill="none"
-                  width="226"
-                  height="162"
-                  rx="3"
-                  ry="3"
-                ></rect>
-              </svg>
               <div className={styles.btn_modal}>
-                <button onClick={(e) => { onRevisionButtonClick(e) }}>Prefiro revisar antes de começar!</button>
-                <button onClick={(e) => { onExploreButtonClick(e) }}>Estou pronto para os desafios!</button>
+                <button onClick={() => { closeModal() }}>Fechar</button>
+                {/* <button onClick={(e) => { onExploreButtonClick(e) }}>Estou pronto para os desafios!</button> */}
               </div>
             </div>
           </div>
@@ -233,34 +279,33 @@ const Home: React.FC = () => {
             <>
 
               <form className={`${styles.form_content} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out}`}>
-                {/* Ícone "Home" */}
-                <input type="radio" id="Slide1" name="slider" title="Home" defaultChecked />
-                <input type="radio" id="Slide2" name="slider" title="Seu progresso" />
-                <input type="radio" id="Slide3" name="slider" title="Revisão" />
-                <input type="radio" id="Slide4" name="slider" title="Perfil" />
-                <input type="radio" id="Slide5" name="slider" title="Sobre" />
+
+
+                {/* <input type="radio" id="Slide1" name="slider" title="Home" defaultChecked className={styles.input_hidden} />
+                <input type="radio" id="Slide2" name="slider" title="Seu progresso" className={styles.input_hidden}/> */}
+
                 <div className={styles.labels}>
-                  <label className={styles.Slide} id="Slide1">
-                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
-                      <div>
+                  <label className={`${styles.Slide} ${navSlide == 'home' ? styles.navSlide1 : ''} ${navSlide == 'progress' ? styles.navSlide2 : ''}`} id="Slide1">
+                    <Header color="white" />
+
+                    <div className={styles.navigation_icons}>
+
+                      <div className={styles.nav_icon} onClick={(e) => { handleNavHomeClick(e) }}>
                         <FontAwesomeIcon
-                          icon="database"
+                          icon="home"
                         />
-                        <span>SQLand</span>
+
+                        <span className={styles.underline} >Home</span>
                       </div>
 
-                      <div className="">
-                        <p>Sair</p>
-                        <span>
-                          <FontAwesomeIcon
-                            className={styles.icon}
-                            icon="right-from-bracket"
-                            onClick={() => onLogOutButtonClick()}
-                          />
-                        </span>
+                      <div className={styles.nav_icon} onClick={(e) => { handleNavProgressClick(e) }}>
+                        <FontAwesomeIcon
+                          icon="list-check"
+                        />
+
+                        <span>Progresso</span>
                       </div>
-                    </div> */}
-                    <Header color="white"/>
+                    </div>
 
                     <div className={styles.content}>
                       <h1>
@@ -268,37 +313,45 @@ const Home: React.FC = () => {
                       </h1>
                     </div>
                     <p>Comece sua Jornada de Aprendizado Agora!</p>
-                    <p>
-                      Clique em <span>'Explorar'</span> para Começar
-                    </p>
 
-                    <div className={styles["buttons-home"]}>
+                    <div className={styles.buttons_home}>
                       <input type="button" value="Explorar" />
-                      <button onClick={(e) => { openModal(e) }}>Explorar</button>
-                      <button onClick={handleSobreClick}>Sobre</button>
+                      <button onClick={(e) => { onRevisionButtonClick(e) }}>COMEÇAR</button>
                     </div>
                   </label>
-                  <label className={styles.Slide} id="Slide2">
-                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
-                      <FontAwesomeIcon
-                        icon="database"
-                      />
-                      <span>SQLand</span>
-                    </div> */}
+                  <label className={`${styles.Slide} ${navSlide == 'progress' ? styles.navSlide2 : ''}`} id="Slide2">
 
-                    <Header color="white"/>
+                    <Header color="white" />
+
+                    <div className={styles.navigation_icons}>
+
+                      <div className={styles.nav_icon} onClick={(e) => { handleNavHomeClick(e) }}>
+                        <FontAwesomeIcon
+                          icon="home"
+                        />
+
+                        <span>Home</span>
+                      </div>
+
+                      <div className={styles.nav_icon} onClick={(e) => { handleNavProgressClick(e) }}>
+                        <FontAwesomeIcon
+                          icon="list-check"
+                        />
+
+                        <span className={styles.underline}>Progresso</span>
+                      </div>
+                    </div>
 
                     <div className={styles["content-progresso"]}>
-                      <h1>Progresso</h1>
 
-                      {/* <ProgressBar currentXpProp={currentXP} type={"home"} /> */}
+                      {navSlide === 'progress' && <ProgressBar currentXpProp={userXp} levelProp={userLevel} type={"home"} />}
 
                       <div className={styles.card}>
                         <div className={styles["card-header"]}>
-                          <div className={styles["header-img"]}></div>
-                          <div className={styles["user-name"]}>
-                            <h3>Vinicius de Stephano</h3>
-                            <p>Iniciante</p>
+
+                          <div className={styles.user_name}>
+                            <h3>{fullName}</h3>
+                            <p>{userLevel == 1 ? "Iniciante" : (userLevel == 2 ? "Intermediário" : "Avançado")}</p>
                           </div>
                         </div>
                         <div className={styles["progress-bar"]}>
@@ -311,106 +364,27 @@ const Home: React.FC = () => {
                             <h3>Niveis</h3>
                           </div>
 
-                          <div className={styles["levels-balls"]}>
-                            <div className={styles.ball}>1</div>
-                            <div className={styles.ball}>2</div>
-                            <div className={styles.ball}>3</div>
-                            <div className={styles.ball}>4</div>
+                          <div className={styles.levels_balls}>
+                            {[...Array(10)].map((_, index) => (
+                              <div
+                                key={index}
+                                className={`${styles.ball} ${index < currentQuestionIndex
+                                  ? styles.ball_green
+                                  : index === currentQuestionIndex
+                                    ? styles.ball_purple
+                                    : styles.ball_grey
+                                  }`}
+                              >
+                                {index + 1}
+                              </div>
+                            ))}
                           </div>
+
                         </div>
-                        <div className={styles["card-button"]}>
+                        <div className={styles.card_button}>
                           <input type="text" />
-                          <input type="button" value="Continuar" />
+                          {Number(currentQuestionIndex) <= 0 ? <input className={styles.btn_disabled} disabled type="button" value="Continuar" onClick={(e) => { onExploreButtonClick(e) }} /> : <input className="" type="button" value={(userXp == 300 && userLevel == 3 ? "Recomeçar" : "Continuar")} onClick={(e) => { onExploreButtonClick(e) }} />}
                         </div>
-                      </div>
-                    </div>
-                    <div className={styles.icon}>
-                      <span>
-                        <i className="fa fa-keyboard-o"></i>
-                      </span>
-                      <span>Use as setas do teclado para navegar entre os menus</span>
-                    </div>
-                  </label>
-                  <label className={styles.Slide} id="Slide3">
-                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
-                      <FontAwesomeIcon
-                        icon="database"
-                      />
-                      <span>SQLand</span>
-                    </div> */}
-
-                    <Header color="white"/>
-
-                    <div className={styles.content}>
-                      <h1>Adding pages to this template</h1>
-                      <div className={styles.block}>
-                        <ol>
-                          <li>Add the pages title in the pageTitle array in the HTML editor to generate pages</li>
-                          <li>Add the number of pages in the $npages variable in the CSS editor</li>
-                        </ol>
-                      </div>
-                    </div>
-                  </label>
-                  <label className={styles.Slide} id="Slide4">
-                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
-                      <FontAwesomeIcon
-                        icon="database"
-                      />
-                      <span>SQLand</span>
-                    </div> */}
-
-                    <Header color="white"/>
-
-                    <div className={styles.content}>
-                      <h1>Perfil</h1>
-                      {isMounted && (
-                        <>
-                          <div className={styles.logout_icon}>
-                            <p>Sair</p>
-                            <span>
-                              <FontAwesomeIcon
-                                className={styles.icon}
-                                icon="right-from-bracket"
-                                onClick={() => onLogOutButtonClick()}
-                              />
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </label>
-                  <label className={styles.Slide} id="Slide5">
-                    {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
-                      <FontAwesomeIcon
-                        icon="database"
-                      />
-                      <span>SQLand</span>
-                    </div> */}
-                    <Header color="white"/>
-
-                    <div className={styles.content}>
-                      <h1>Sobre</h1>
-                      <div className={styles.block}>
-                        <span>
-                          <a href="https://codepen.io/hrtzt/pen/NPZKRN" target="_blank">
-                            One Page Navigation CSS Menu
-                          </a>
-                        </span>
-                        <span>
-                          <a href="https://codepen.io/hrtzt/pen/YPoeWd" target="_blank">
-                            The simplest CSS switch
-                          </a>
-                        </span>
-                        <span>
-                          <a href="https://codepen.io/hrtzt/pen/JdYaEZ" target="_blank">
-                            Animated cube slider CSS only
-                          </a>
-                        </span>
-                        <span>
-                          <a href="https://codepen.io/hrtzt/pen/vGqEJO" target="_blank">
-                            Google photos album view with only CSS
-                          </a>
-                        </span>
                       </div>
                     </div>
                   </label>

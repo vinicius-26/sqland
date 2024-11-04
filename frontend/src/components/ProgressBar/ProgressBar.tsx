@@ -20,10 +20,25 @@ export function ProgressBar({ currentXpProp, levelProp, type }: ProgressBarProps
   }, [currentXpProp]);
 
   useEffect(() => {
-    setLevel(levelProp);
+    if (currentXP === 300) {
+      setLevel(3);
+      setCurrentXP(100);
+    } else {
+      setLevel(levelProp);
+    }
   }, [levelProp]);
 
-  const progressPercentage = ((currentXP / maxXP) * 100) % 100; // Calcula a porcentagem da barra
+  let progressPercentage = 0;
+  
+  const calculaPorcentagemBarra = () => {
+    if(currentXP == 300 && level == 3){
+      progressPercentage = 100;
+    } else {
+      progressPercentage = ((currentXP / maxXP) * 100) % 100; // Calcula a porcentagem da barra
+    }
+  }
+
+  calculaPorcentagemBarra();
 
   return (
     <>

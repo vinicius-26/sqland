@@ -287,17 +287,21 @@ const MainLogin: React.FC = () => {
         setLoading(true); // Exibe o spinner
 
         // Verifica se a pessoa já passou a primeira vez pelas primeiras task - Retorna TRUE se já passou 
-        const hasAccess = await verificaPrimeiroAcesso(user.userId);
+        // const hasAccess = await verificaPrimeiroAcesso(user.userId);
 
-        if (hasAccess) {
-          setTimeout(() => {
-            router.push('/Home');
-          }, 1000); // Simula um atraso (1 segundo)
-        } else {
-          setTimeout(() => {
-            router.push('/StartPage');
-          }, 1000); // Simula um atraso (1 segundo)
-        }
+        // if (hasAccess) {
+        //   setTimeout(() => {
+        //     router.push('/Home');
+        //   }, 1000); // Simula um atraso (1 segundo)
+        // } else {
+        //   setTimeout(() => {
+        //     router.push('/StartPage');
+        //   }, 1000); // Simula um atraso (1 segundo)
+        // }
+
+        setTimeout(() => {
+          router.push('/Home');
+        }, 1000); // Simula um atraso (1 segundo)
 
       } else {
         setIsLoginModalMessage('Usuário e/ou senha incorretos!');
@@ -466,14 +470,14 @@ const MainLogin: React.FC = () => {
                                   :
                                   <>
                                     <div className={styles.modal_button}>
+                                      <button onClick={closeLoginModal}>Cancelar</button>
+
                                       <button onClick={() => {
                                         closeLoginModal();
                                         setNewEmail(email);
                                         toggleForm();
                                       }
                                       }>Sim</button>
-
-                                      <button onClick={closeLoginModal}>Cancelar</button>
                                     </div>
                                   </>
                                 }
@@ -485,7 +489,7 @@ const MainLogin: React.FC = () => {
                           <div className={styles.login_title}>
                             <h1>Bem-vindo ao SQLand</h1>
                             <p>Descubra o Mundo do SQL e Bancos de Dados</p>
-                            <Image 
+                            <Image
                               src={logoPrincipal}
                               alt="Logo"
                               className={styles.logo_principal}

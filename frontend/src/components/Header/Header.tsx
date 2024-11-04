@@ -1,6 +1,9 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faRightFromBracket, faDatabase } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +12,6 @@ library.add(faRightFromBracket, faDatabase);
 import { TailSpin } from 'react-loader-spinner'; // Spinner importado
 
 import styles from './styles.module.css';
-import { useRouter } from 'next/navigation';
 
 export interface HeaderProps {
   color: string
@@ -17,6 +19,8 @@ export interface HeaderProps {
 
 export function Header({ color }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
+
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [loading, setLoading] = useState(false); // Estado do spinner
@@ -30,6 +34,17 @@ export function Header({ color }: HeaderProps) {
       router.push('/Login');
     }, 1000); // Simulando um tempo de delay (1 segundo)
 
+  };
+
+  const onHomeIconClick = () => {
+
+    if (pathname != '/Home') {
+      setLoading(true); // Exibe o spinner
+      setTimeout(() => {
+        router.push('/Home');
+        setLoading(false);
+      }, 1000); // Simulando um tempo de delay (1 segundo)
+    }
   };
 
   return (
@@ -51,7 +66,7 @@ export function Header({ color }: HeaderProps) {
       ) : (
         <>
           <div className={`${styles.main_icon} ${color == 'white' && styles.color_white} ${color == 'purple_dark' && styles.color_purple_dark} ${color == 'purple_light' && styles.color_purple_light}`}>
-            <div className={styles.sql_icon}>
+            <div className={styles.sql_icon} onClick={() => onHomeIconClick()}>
               <FontAwesomeIcon
                 icon="database"
               />

@@ -7,8 +7,8 @@ import { TailSpin } from 'react-loader-spinner'; // Spinner importado
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faArrowRight, faArrowLeft, faKeyboard, faDatabase, faList, faStore, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
-library.add(faArrowRight, faArrowLeft, faKeyboard, faDatabase, faList, faStore, faCircleQuestion);
+import { faArrowRight, faArrowLeft, faKeyboard, faDatabase, faList, faStore, faCircleQuestion, faRotate } from '@fortawesome/free-solid-svg-icons';
+library.add(faArrowRight, faArrowLeft, faKeyboard, faDatabase, faList, faStore, faCircleQuestion, faRotate);
 
 import styles from './styles.module.css';
 import { Header } from '@/components/Header/Header';
@@ -141,6 +141,8 @@ const Revision: React.FC = () => {
   }, []);
 
   const onNextButtonClick = () => {
+    setErrorMessage('');
+
     setCardAnimationClass('slide_out_left');
 
     setTimeout(() => {
@@ -148,15 +150,17 @@ const Revision: React.FC = () => {
       setCardAnimationClass('slide_in_right');
     }, 500);
 
-    setTimeout(() => {
-      if (currentRevisionIndex === 2 && !primeiroAcesso) {
-        openModal('dica');
-        setPrimeiroAcesso(true);
-      }
-    }, 950);
+    // setTimeout(() => {
+    //   if (currentRevisionIndex === 2 && !primeiroAcesso) {
+    //     openModal('dica');
+    //     setPrimeiroAcesso(true);
+    //   }
+    // }, 950);
   };
 
   const onPrevButtonClick = () => {
+    setErrorMessage('');
+
     if (currentRevisionIndex > 0) {
       setCardAnimationClass('slide_out_right');
 
@@ -171,9 +175,28 @@ const Revision: React.FC = () => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (currentRevisionIndex != 6) {
+    if (currentRevisionIndex < 6) {
       onNextButtonClick();
     } else {
+
+      // Reseta o progresso do usuário para iniciar os exercicios novamente
+      const resetProgress = async () => {
+        try {
+          const response = await fetch(`${apiUrl}/reset-xp`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userId })
+          });
+          const data = await response.json();
+
+        } catch (error) {
+          console.error('Erro ao buscar as questões:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
 
       setTimeout(() => {
         setFormAnimationClass('fade_out');
@@ -183,7 +206,8 @@ const Revision: React.FC = () => {
 
       setTimeout(() => {
         setIsFormVisible(false);
-        router.push('/Home');
+        resetProgress();
+        router.push('/Exercises');
       }, 1000);
     }
 
@@ -261,6 +285,11 @@ const Revision: React.FC = () => {
     event.preventDefault();
     event.stopPropagation();
 
+    if (productsInsertSessions.length == 3) {
+      setErrorMessage('Restaure a tabela para testar o comando novamente...');
+      return;
+    }
+
     if (!nomeProduto || !categoria || !quantidade || !valor) {
       setErrorMessage('Informe os valores corretamente para testar o comando...');
       return;
@@ -313,6 +342,11 @@ const Revision: React.FC = () => {
   const handleClickTestDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
+
+    if (Number(idDelete) < 1 || Number(idDelete) > 3) {
+      setErrorMessage('Informe um ID da tabela para testar o comando...');
+      return;
+    }
 
     if (!whereDelete) {
       setProductsDeleteSessions([]); // Limpa o estado, simulando o DELETE completo
@@ -432,7 +466,7 @@ const Revision: React.FC = () => {
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 
 
-              {modalSelectValue && <h2>{(modalSelectValue == 'PRODUTOS_UPDATE' || modalSelectValue == 'PRODUTOS_DELETE') ? 'PRODUTOS' : modalSelectValue}</h2>}
+              {modalSelectValue && <h2>{(modalSelectValue == 'PRODUTOS_INSERT' || modalSelectValue == 'PRODUTOS_UPDATE' || modalSelectValue == 'PRODUTOS_DELETE') ? 'PRODUTOS' : modalSelectValue} {modalSelectValue == 'WHERE_DELETE' && 'WHERE'}</h2>}
 
               {/* SELECT */}
               {modalSelectValue == 'SELECT' &&
@@ -456,8 +490,12 @@ const Revision: React.FC = () => {
                 <p>Ao usar este comando estamos dizendo para o banco de dados o seguinte: "INSIRA EM".</p>
               }
 
+              {modalSelectValue == 'PRODUTOS_INSERT' &&
+                <p>Este trecho tem a função de informar ao banco de dados em qual tabela os dados serão inseridos. <br /> <br /> "INSERT INTO" (<strong>INSIRA EM</strong>) "PRODUTOS" (<strong>TABELA PRODUTOS</strong>)</p>
+              }
+
               {modalSelectValue == '(NOME_PRODUTO, CATEGORIA, QUANTIDADE, VALOR)' &&
-                <p>Este ponto por finalizar o comando ao banco de dados onde é dito em qual local ele deve realizar a busca, neste caso é o <strong>NOME</strong> da tabela: 'PRODUTOS'. <br /> <br /> "SELECT" (<strong>SELECIONE</strong>) "*" (<strong>TODAS AS COLUNAS</strong>) "FROM" (<strong>DA</strong>) "PRODUTOS" (<strong>TABELA PRODUTOS</strong>)</p>
+                <p>Este ponto do comando sinaliza para o banco de dados quais campos serão preenchidos com os respectivos dados que virão a seguir do comando VALUES. <br /> <br /> "INSERT INTO" (<strong>INSIRA EM</strong>) "PRODUTOS" (<strong>TABELA PRODUTOS</strong>) "(NOME_PRODUTO, CATEGORIA, [...])" (<strong>DENTRO DOS CAMPOS: NOME_PRODUTO, CATEGORIA, [...]</strong>)</p>
               }
 
               {modalSelectValue == 'VALUES' &&
@@ -576,7 +614,7 @@ const Revision: React.FC = () => {
                     )}
                     {(currentRevision && currentRevisionIndex) >= 3 &&
                       <FontAwesomeIcon
-                        className={styles.icon_dica}
+                        className={`${styles.icon_dica} ${(currentRevision && currentRevisionIndex) == 3 && styles.anim_pulse} `}
                         icon="circle-question"
                         onClick={() => { openModal('dica') }}
                       />}
@@ -663,6 +701,7 @@ const Revision: React.FC = () => {
                         <>
                           <div className={styles.insertRevisionComands}>
                             <div className={styles.insertComand}>
+                              <p></p>
                               <p>
                                 <span onClick={() => { openModal('comando_select'); setModalSelectValue('INSERT INTO'); }}>INSERT INTO</span>&nbsp;
                                 <span onClick={() => { openModal('comando_select'); setModalSelectValue('PRODUTOS_INSERT'); }}>PRODUTOS</span>&nbsp;
@@ -673,7 +712,22 @@ const Revision: React.FC = () => {
                                 <input type="number" required value={quantidade} onChange={(ev) => setQuantidade(ev.target.value)} onFocus={() => { setErrorMessage('') }} /> <span> , </span>
                                 <input type="number" required value={valor} onChange={(ev) => setValor(ev.target.value)} onFocus={() => { setErrorMessage('') }} /> )
                               </p>
-                              <button onClick={(e) => { insereDadosNoEstado(e) }}>Testar Comando</button>
+
+                              <div className={styles.insert_test_commands}>
+                                <button onClick={(e) => { insereDadosNoEstado(e) }}>Testar Comando</button>
+
+                                <div className={styles.icon_reset}>
+
+                                  <FontAwesomeIcon
+                                    icon="rotate"
+                                    onClick={() => { retornaEstadoInicialInsert(); }}
+                                  />
+                                  <p>Restaurar tabela</p>
+                                </div>
+                              </div>
+
+                              <p></p>
+
                             </div>
                             <div className={styles.tableSelectRevision}>
                               <table className={styles.stockTableSelectRevision}>
@@ -700,9 +754,9 @@ const Revision: React.FC = () => {
                               </table>
                             </div>
 
-                            <div className={styles.subtitulo}>
+                            {/* <div className={styles.subtitulo}>
                               <span onClick={() => { retornaEstadoInicialInsert(); }}>Retornar tabela para o estado inicial</span>
-                            </div>
+                            </div> */}
                           </div>
                         </>
                       )}
@@ -712,14 +766,33 @@ const Revision: React.FC = () => {
                         <>
                           <div className={styles.updateRevisionComands}>
                             <div className={styles.updateComand}>
+                              <p></p>
                               <p>
                                 <span onClick={() => { openModal('comando_select'); setModalSelectValue('UPDATE'); }}>UPDATE</span>&nbsp;
                                 <span onClick={() => { openModal('comando_select'); setModalSelectValue('PRODUTOS_UPDATE'); }}>PRODUTOS</span>&nbsp;
                                 <span onClick={() => { openModal('comando_select'); setModalSelectValue("SET NOME_PRODUTO = 'Pão'"); }}>SET NOME_PRODUTO = 'Pão'</span>&nbsp;
                                 <span onClick={() => { openModal('comando_select'); setModalSelectValue('WHERE'); }}>{whereUpdate}</span>
                               </p>
-                              <button onClick={(e) => { handleClickTestUpdate(e) }}>Testar Comando</button>
-                              {!whereUpdate ? <span onClick={() => { setWhereUpdate("WHERE ID_PRODUTO = '2' "); }}>Adicionar cláuscula WHERE</span> : <span onClick={() => { setWhereUpdate('') }}>Remover cláuscula WHERE</span>}
+
+                              <p></p>
+
+                              <div className={styles.insert_test_commands}>
+                                <button onClick={(e) => { handleClickTestUpdate(e) }}>Testar Comando</button>
+                                {!whereUpdate ? <span onClick={() => { setWhereUpdate("WHERE ID_PRODUTO = '2' "); }}>Adicionar cláuscula WHERE</span> : <span onClick={() => { setWhereUpdate('') }}>Remover cláuscula WHERE</span>}
+
+                                <div className={styles.icon_reset}>
+                                  <FontAwesomeIcon
+                                    icon="rotate"
+                                    onClick={() => { retornaEstadoInicialUpdate(); }}
+                                  />
+                                  <p>Restaurar tabela</p>
+                                </div>
+                              </div>
+
+                              <p></p>
+
+                              {/* <button onClick={(e) => { handleClickTestUpdate(e) }}>Testar Comando</button>
+                              {!whereUpdate ? <span onClick={() => { setWhereUpdate("WHERE ID_PRODUTO = '2' "); }}>Adicionar cláuscula WHERE</span> : <span onClick={() => { setWhereUpdate('') }}>Remover cláuscula WHERE</span>} */}
 
                             </div>
                             <div className={styles.tableSelectRevision}>
@@ -747,9 +820,9 @@ const Revision: React.FC = () => {
                               </table>
                             </div>
 
-                            <div className={styles.subtitulo}>
+                            {/* <div className={styles.subtitulo}>
                               <span onClick={() => { retornaEstadoInicialUpdate(); }}>Retornar tabela para o estado inicial</span>
-                            </div>
+                            </div> */}
                           </div>
                         </>
                       )}
@@ -759,15 +832,35 @@ const Revision: React.FC = () => {
                         <>
                           <div className={styles.updateRevisionComands}>
                             <div className={styles.updateComand}>
-                              <p>
-                                <span onClick={() => { openModal('comando_select'); setModalSelectValue('DELETE FROM'); }}>DELETE FROM </span>
-                                <span onClick={() => { openModal('comando_select'); setModalSelectValue('PRODUTOS_DELETE'); }}>PRODUTOS </span>
-                                <span onClick={() => { openModal('comando_select'); setModalSelectValue('WHERE_DELETE'); }}> {whereDelete}</span> {whereDelete && <input type="number" required value={idDelete} onChange={(ev) => setIdDelete(ev.target.value)} onFocus={() => { setErrorMessage('') }} />}
-                              </p>
-                              <button onClick={(e) => { handleClickTestDelete(e) }}>Testar Comando</button>
-                              {!whereDelete ? <span onClick={() => { setWhereDelete("WHERE ID_PRODUTO =  "); }}>Adicionar cláuscula WHERE</span> : <span onClick={() => { setWhereDelete('') }}>Remover cláuscula WHERE</span>}
+                              <p></p>
 
+                              <p>
+                                <span onClick={() => { openModal('comando_select'); setModalSelectValue('DELETE FROM'); }}>DELETE FROM</span>&nbsp;
+                                <span onClick={() => { openModal('comando_select'); setModalSelectValue('PRODUTOS_DELETE'); }}>PRODUTOS</span>&nbsp;
+                                <span onClick={() => { openModal('comando_select'); setModalSelectValue('WHERE_DELETE'); }}>{whereDelete}</span>&nbsp;{whereDelete && <input type="number" required value={idDelete} min='1' max='3' onChange={(ev) => setIdDelete(ev.target.value)} onFocus={() => { setErrorMessage('') }} />}
+                              </p>
+
+                              <p></p>
+
+                              <div className={styles.insert_test_commands}>
+                                <button onClick={(e) => { handleClickTestDelete(e) }}>Testar Comando</button>
+                                {!whereDelete ? <span onClick={() => { setWhereDelete("WHERE ID_PRODUTO =  "); }}>Adicionar cláuscula WHERE</span> : <span onClick={() => { setWhereDelete('') }}>Remover cláuscula WHERE</span>}
+
+                                <div className={styles.icon_reset}>
+                                  <FontAwesomeIcon
+                                    icon="rotate"
+                                    onClick={() => { retornaEstadoInicialDelete(); }}
+                                  />
+                                  <p>Restaurar tabela</p>
+                                </div>
+                              </div>
+
+                              {/* <button onClick={(e) => { handleClickTestDelete(e) }}>Testar Comando</button>
+                              {!whereDelete ? <span onClick={() => { setWhereDelete("WHERE ID_PRODUTO =  "); }}>Adicionar cláuscula WHERE</span> : <span onClick={() => { setWhereDelete('') }}>Remover cláuscula WHERE</span>} */}
+
+                              <p></p>
                             </div>
+
                             <div className={styles.tableSelectRevision}>
                               <table className={styles.stockTableSelectRevision}>
                                 <thead>
@@ -793,9 +886,9 @@ const Revision: React.FC = () => {
                               </table>
                             </div>
 
-                            <div className={styles.subtitulo}>
+                            {/* <div className={styles.subtitulo}>
                               <span onClick={() => { retornaEstadoInicialDelete(); }}>Retornar tabela para o estado inicial</span>
-                            </div>
+                            </div> */}
                           </div>
                         </>
                       )}
@@ -806,7 +899,7 @@ const Revision: React.FC = () => {
                   <div className={styles.errorLabel}>{errorMessage}</div>
                   {/* Botão de Avançar */}
                   <div className={styles.btn_avancar}>
-                    <button onClick={(e) => { retornarPaginaInicial(e) }} className={styles.btn_retornar}>Página inicial</button>
+                    {/* <button onClick={(e) => { retornarPaginaInicial(e) }} className={styles.btn_retornar}>Página inicial</button> */}
                     {currentRevisionIndex === 6 &&
                       <button className={styles.btn_1} onClick={(event) => handleValidateClick(event)}>
                         <svg
@@ -818,7 +911,7 @@ const Revision: React.FC = () => {
                             d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
                           ></path>
                         </svg>
-                        <span className={styles.text}> {currentRevisionIndex === 6 ? 'Finalizar' : 'Próximo'}</span>
+                        <span className={styles.text}> {currentRevisionIndex === 6 ? 'Iniciar Exercícios' : 'Próximo'}</span>
                         <span className={styles.circle}></span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

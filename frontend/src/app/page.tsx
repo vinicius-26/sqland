@@ -40,13 +40,15 @@ export default function MainPage() {
         // Token exists, redirect to /Home or StartPage
 
         // Verifica se a pessoa já passou a primeira vez pelas primeiras tasks - Retorna TRUE se já passou 
-        const hasAccess = await verificaPrimeiroAcesso(user.userId);
+        // const hasAccess = await verificaPrimeiroAcesso(user.userId);
 
-        if (hasAccess) {
-          router.push('/Home');
-        } else {
-          router.push('/StartPage');
-        }
+        // if (hasAccess) {
+        //   router.push('/Home');
+        // } else {
+        //   router.push('/StartPage');
+        // }
+
+        router.push('/Home');
       } else {
         // No token, redirect to /login
         router.push('/Login');

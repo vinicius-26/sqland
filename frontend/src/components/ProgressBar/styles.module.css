@@ -6,7 +6,7 @@
   background-color: transparent;
   z-index: 100;
   position: absolute;
-  top: 40px;
+  top: 110px;
   flex-direction: column;
   color: var(--color-box-base);
 }

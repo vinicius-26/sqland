@@ -1,3 +1,47 @@
+.navSlide1 {
+  transform: translateY(-0%);
+}
+
+.navSlide2 {
+  transform: translateY(-100%);
+}
+
+.navigation_icons {
+  position: absolute;
+  display: flex;
+  height: 100vh;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  padding-left: 30px;
+  color: white;
+  font-size: 24px;
+  z-index: 1000;
+  text-align: left;
+}
+
+.nav_icon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 100%;
+  gap: 20px;
+}
+
+.nav_icon span {
+  font-weight: 400 !important;
+  font-size: 14px;
+}
+
+.underline {
+  text-decoration: none;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
 /* The basic stuff to make it work */
 .contenedor {
   width: 100vw;
@@ -7,8 +51,6 @@
   position: relative;
   display: flex;
   align-items: center;
-
-  font-family: "Open sans", sans-serif;
   font-size: 16px;
   font-weight: 100;
   color: white;
@@ -128,7 +170,7 @@
   padding: 0 110px;
 }
 
-.content h1{
+.content h1 {
   margin-bottom: 30px;
 }
 
@@ -159,11 +201,12 @@
   color: #717171;
 }
 
-.Slide p{
+.Slide p {
   padding: 5px;
+  font-weight: 200;
 }
 
-.Slide span{
+.Slide span {
   font-weight: bold;
 }
 
@@ -183,7 +226,7 @@
   font-size: 22px;
 }
 
-.icons{
+.icons {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -200,7 +243,7 @@
   vertical-align: middle;
 }
 
-.buttons-home{
+.buttons_home {
   width: 15%;
   height: 10%;
   display: flex;
@@ -211,11 +254,7 @@
   gap: 20px;
 }
 
-.buttons-home input {
-  display: none;
-}
-
-.buttons-home button {
+.buttons_home button {
   background: var(--color-secundary-light);
   border: 0;
   color: var(--color-button-text);
@@ -223,26 +262,16 @@
   padding: 5px;
   border-radius: 10px;
   transition: background 0.2s ease;
-}
-
-.buttons-home button:nth-child(2) {
-  background-color: var(--color-secundary-light);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.buttons-home button:nth-child(2):hover {
+.buttons_home button:hover {
   cursor: pointer;
   background: #04b453;
 }
 
-.buttons-home button:last-child {
-  background-color: var(--color-primary-light);
-  border: 1px solid white;
-}
-
-.buttons-home button:last-child:hover {
-  cursor: pointer;
-  background-color: var(--color-primary-dark);
+.buttons_home input {
+  display: none !important;
 }
 
 /* Animação de fade_in */
@@ -254,11 +283,14 @@
 @keyframes fadeInAnimation {
   0% {
     opacity: 0;
-    transform: translateY(-20px); /* Efeito opcional de deslizar */
+    transform: translateY(-20px);
+    /* Efeito opcional de deslizar */
   }
+
   100% {
     opacity: 1;
-    transform: translateY(0); /* Retorna à posição original */
+    transform: translateY(0);
+    /* Retorna à posição original */
   }
 }
 
@@ -273,9 +305,11 @@
     opacity: 1;
     transform: translateY(0);
   }
+
   100% {
     opacity: 0;
-    transform: translateY(20px); /* Deslizar para fora */
+    transform: translateY(20px);
+    /* Deslizar para fora */
   }
 }
 
@@ -283,7 +317,7 @@
   display: none;
 }
 
-.logout_icon{
+.logout_icon {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -291,15 +325,15 @@
   justify-content: center;
 }
 
-.icon{
+.icon {
   position: inherit;
 }
 
-.logout_icon span:hover{
+.logout_icon span:hover {
   cursor: pointer;
 }
 
-.spinner-container-home{
+.spinner-container-home {
   width: 100%;
   height: 100%;
   display: flex;
@@ -311,16 +345,17 @@
 
 /* Slide de Progresso */
 
-.content-progresso{
+.content-progresso {
   width: 100%;
   height: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;  
+  flex-direction: column;
 }
-.card{
-  width: 30%;
+
+.card {
+  width: 40%;
   height: 100%;
   background-color: var(--color-background);
   border-radius: 10px;
@@ -328,10 +363,10 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 50px 0;
+  padding: 40px 0;
 }
 
-.card-header{
+.card-header {
   width: 100%;
   display: flex;
   justify-content: left;
@@ -340,14 +375,15 @@
   padding: 20px;
 }
 
-.card-header h3{
+.card-header h3 {
   color: var(--color-text-title);
 }
-.card-header p{
+
+.card-header p {
   color: var(--color-text-base);
 }
 
-.header-img{
+.header-img {
   width: 100px;
   background-color: white;
   height: 100px;
@@ -355,21 +391,24 @@
   margin-left: 30px;
 }
 
-.user-name{
-  width: 70%;
+.user_name {
+  width: 100%;
   display: flex;
-  justify-content: left;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
-  padding-left: 30px;
 }
 
-.progress-bar{
+.user_name p{
+  font-weight: 300;
+}
+
+.progress-bar {
   width: 100%;
   height: 20%;
 }
 
-.levels{
+.levels {
   width: 100%;
   display: flex;
   align-items: center;
@@ -377,13 +416,13 @@
   flex-direction: column;
 }
 
-.level-title{
+.level-title {
   width: 100%;
   color: var(--color-text-complement);
   padding-bottom: 15px;
 }
 
-.levels-balls{
+.levels_balls {
   width: 100%;
   display: flex;
   align-items: center;
@@ -392,27 +431,39 @@
   gap: 20px;
 }
 
-.ball{
+.ball {
   display: flex;
   width: 50px;
   height: 50px;
   border-radius: 100px;
-  background-color: var(--color-secundary-light);
   color: white;
   align-items: center;
   justify-content: center;
   font-weight: bold;
 }
 
-.card-button{
-  width: 100%;
+.ball_green{
+  background-color: var(--color-secundary-light);
 }
 
-.card-button input:nth-child(1){
+.ball_grey{
+  background-color: grey;
+}
+
+.ball_purple{
+  background-color: var(--color-text-title);
+}
+
+.card_button {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.card_button input:nth-child(1) {
   display: none;
 }
 
-.card-button input{
+.card_button input {
   background: var(--color-secundary-light);
   border: 0;
   color: var(--color-button-text);
@@ -423,7 +474,7 @@
   transition: 0.2s;
 }
 
-.card-button input:hover{
+.card_button input:hover {
   cursor: pointer;
   background-color: var(--color-secundary-dark);
 }
@@ -432,8 +483,9 @@
   display: block !important;
 }
 
-.buttons-home input{
-  display: none !important;
+.btn_disabled{
+  background-color: grey !important;
+  cursor: default !important;
 }
 
 /* CSS DO MODAL */
@@ -457,30 +509,38 @@
 }
 
 .modalContainer .modalBackground .modal {
-  background: #211f23;
+  background: #fff;
   width: 50%;
-  height: 40%;
+  height: 65%;
   display: inline-flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  border-radius: 6px;
+  border-radius: 15px;
   font-weight: 300;
   position: relative;
+  padding: 15px;
 }
 
 .modalContainer .modalBackground .modal h2 {
   font-size: 25px;
   line-height: 25px;
   margin-bottom: 15px;
-  color: #f9f9f9;
+  color: var(--color-text-title);
 }
 
 .modalContainer .modalBackground .modal p {
   font-size: 18px;
-  line-height: 22px;
-  color: rgba(212, 212, 212, 0.959);
-  padding: 3px;
+  line-height: 32px;
+  color: var(--color-text-title);
+  padding-bottom: 15px;
+}
+
+.modalContainer .modalBackground .modal span {
+  color: #fff;
+  padding: 10px;
+  color: var(--color-text-title);
+  font-size: 52px;
 }
 
 .modalContainer .modalBackground .modal p:first-child {
@@ -491,9 +551,9 @@
   font-weight: 200;
 }
 
-.modalContainer .modalBackground .modal strong{
+.modalContainer .modalBackground .modal strong {
   font-weight: 800;
-  color: #fff;
+  color: var(--color-text-title);
 }
 
 .modalContainer .modalBackground .modal .modalSvg {
@@ -517,19 +577,22 @@
   transform: scaleY(0.01) scaleX(0);
   animation: unfoldIn 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
+
 .modalContainer.active .modalBackground .modal {
   transform: scale(0);
   animation: zoomIn 0.5s 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
+
 .modalContainer.out {
   transform: scale(1);
   animation: unfoldOut 1s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
+
 .modalContainer.out .modalBackground .modal {
   animation: zoomOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
-.btn_modal{
+.btn_modal {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -538,7 +601,7 @@
   gap: 30px;
 }
 
-.btn_modal button{
+.btn_modal button {
   background-color: (--color-text-in-primary);
   color: rgb(54, 54, 54);
   border: 0;
@@ -549,17 +612,17 @@
   margin-top: 15px;
 }
 
-.btn_modal button:hover{
+.btn_modal button:hover {
   background: #b1b1b1;
   cursor: pointer;
 }
 
-.btn_modal button:last-child{
+.btn_modal button:last-child {
   background-color: var(--color-primary-light);
   color: var(--color-button-text);
 }
 
-.btn_modal button:last-child:hover{
+.btn_modal button:last-child:hover {
   background: var(--color-primary-dark);
   cursor: pointer;
 }
@@ -568,9 +631,11 @@
   0% {
     transform: scaleY(0.005) scaleX(0);
   }
+
   50% {
     transform: scaleY(0.005) scaleX(1);
   }
+
   100% {
     transform: scaleY(1) scaleX(1);
   }
@@ -580,9 +645,11 @@
   0% {
     transform: scaleY(1) scaleX(1);
   }
+
   50% {
     transform: scaleY(0.005) scaleX(1);
   }
+
   100% {
     transform: scaleY(0.005) scaleX(0);
   }
@@ -592,6 +659,7 @@
   0% {
     transform: scale(0);
   }
+
   100% {
     transform: scale(1);
   }
@@ -601,29 +669,172 @@
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(0);
   }
 }
 
-/* CSS DO MODAL - FIM */ 
+/* CSS DO MODAL - FIM */
+
+/* CSS DOS FOGOS - INICIO */
+@keyframes firework {
+  0% { transform: translate(var(--x), var(--initialY)); width: var(--initialSize); opacity: 1; }
+  50% { width: 0.5vmin; opacity: 1; }
+  100% { width: var(--finalSize); opacity: 0; }
+}
+
+.firework,
+.firework::before,
+.firework::after
+{
+  --initialSize: 0.5vmin;
+  --finalSize: 45vmin;
+  --particleSize: 0.2vmin;
+  --color1: yellow;
+  --color2: khaki;
+  --color3: white;
+  --color4: lime;
+  --color5: gold;
+  --color6: mediumseagreen;
+  --y: -70vmin;
+  --x: -50%;
+  --initialY: 60vmin;
+  content: "";
+  animation: firework 2s infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, var(--y));
+  width: var(--initialSize);
+  aspect-ratio: 1;
+  background: 
+    /*
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 0%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 0%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 100% 100%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 0% 100%,
+    */
+    
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 50% 0%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 50%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 50% 100%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 0% 50%,
+    
+    /* bottom right */
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 80% 90%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 95% 90%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 90% 70%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 100% 60%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 55% 80%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 70% 77%,
+    
+    /* bottom left */
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 22% 90%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 45% 90%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 33% 70%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 10% 60%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 31% 80%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 28% 77%,
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 13% 72%,
+    
+    /* top left */
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 80% 10%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 95% 14%,
+    radial-gradient(circle, var(--color2) var(--particleSize), #0000 0) 90% 23%,
+    radial-gradient(circle, var(--color3) var(--particleSize), #0000 0) 100% 43%,
+    radial-gradient(circle, var(--color4) var(--particleSize), #0000 0) 85% 27%,
+    radial-gradient(circle, var(--color5) var(--particleSize), #0000 0) 77% 37%,
+    radial-gradient(circle, var(--color6) var(--particleSize), #0000 0) 60% 7%,
+    
+    /* top right */
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 22% 14%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 45% 20%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 33% 34%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 10% 29%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 31% 37%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 28% 7%,
+    radial-gradient(circle, var(--color1) var(--particleSize), #0000 0) 13% 42%
+    ;
+  background-size: var(--initialSize) var(--initialSize);
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.firework::before {
+  --x: -50%;
+  --y: -50%;
+  --initialY: -50%;
+/*   transform: translate(-20vmin, -2vmin) rotate(40deg) scale(1.3) rotateY(40deg); */
+  transform: translate(-50%, -50%) rotate(40deg) scale(1.3) rotateY(40deg);
+/*   animation: fireworkPseudo 2s infinite; */
+}
+
+.firework::after {
+  --x: -50%;
+  --y: -50%;
+  --initialY: -50%;
+/*   transform: translate(44vmin, -50%) rotate(170deg) scale(1.15) rotateY(-30deg); */
+  transform: translate(-50%, -50%) rotate(170deg) scale(1.15) rotateY(-30deg);
+/*   animation: fireworkPseudo 2s infinite; */
+}
+
+.firework:nth-child(2) {
+  --x: 30vmin;
+}
+
+.firework:nth-child(2),
+.firework:nth-child(2)::before,
+.firework:nth-child(2)::after {
+  --color1: pink;
+  --color2: violet;
+  --color3: fuchsia;
+  --color4: orchid;
+  --color5: plum;
+  --color6: lavender;  
+  --finalSize: 40vmin;
+  left: 30%;
+  top: 60%;
+  animation-delay: -0.25s;
+}
+
+.firework:nth-child(3) {
+  --x: -30vmin;
+  --y: -50vmin;
+}
+
+.firework:nth-child(3),
+.firework:nth-child(3)::before,
+.firework:nth-child(3)::after {
+  --color1: cyan;
+  --color2: lightcyan;
+  --color3: lightblue;
+  --color4: PaleTurquoise;
+  --color5: SkyBlue;
+  --color6: lavender;
+  --finalSize: 35vmin;
+  left: 70%;
+  top: 60%;
+  animation-delay: -0.4s;
+}
+/* CSS DOS FOGOS - FIM */
 
 @media (max-width: 1440px) {
-  .modalContainer .modalBackground .modal p { 
+  .modalContainer .modalBackground .modal p {
     font-size: 16px;
   }
 
-  .btn_modal button { 
+  .btn_modal button {
     font-size: 14px;
   }
 }
 
 @media (max-width: 1280px) {
-  .modalContainer .modalBackground .modal p { 
+  .modalContainer .modalBackground .modal p {
     font-size: 15px;
   }
 
-  .btn_modal button { 
+  .btn_modal button {
     font-size: 13px;
   }
 }

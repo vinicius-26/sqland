@@ -220,7 +220,7 @@
 
 .btn_1 {
   position: relative;
-  scale: 0.9;
+  scale: 1;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -417,6 +417,10 @@
 .errorLabel {
   font-size: 14px;
   min-height: 25px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* Garante que o espaço para a mensagem de erro seja fixo */
 }
 
@@ -728,6 +732,41 @@
   border-bottom: 1px solid #222222;
 }
 
+@keyframes underlinePulse {
+  0%, 100% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Aplica a animação apenas no primeiro span dentro da div .updateComand */
+.selectComand span:first-of-type {
+  position: relative;
+}
+
+.selectComand span:first-of-type:after {
+  content: "";
+  position: absolute;
+  bottom: -2px; /* Ajuste para a posição desejada */
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #222222;
+  transform-origin: center;
+  animation: underlinePulse 1.5s infinite ease-in-out;
+}
+
+/* Interrompe a animação no hover */
+.selectComand span:first-of-type:hover:after {
+  animation: none;
+  transform: scaleX(1);
+  opacity: 1;
+}
+
 .tableSelectRevision {
   width: 80%;
   height: 80%;
@@ -813,6 +852,7 @@
   transition: border-color 0.3s, box-shadow 0.3s;
   /* Animação suave */
   margin-top: 10px;
+  text-transform: uppercase;
 }
 
 .insertComand input:focus {
@@ -831,7 +871,6 @@
   padding: 5px;
   border-radius: 5px;
   transition: background 0.2s ease;
-  margin-bottom: 10px;
 }
 
 .insertComand button:hover {
@@ -839,9 +878,42 @@
   cursor: pointer;
 }
 
+.insert_test_commands{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  height: 50px;
+  gap: 40px;
+}
+
+.icon_reset{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-text-title);
+  font-size: 26px;
+  gap: 5px;
+  cursor: pointer;  
+}
+
+.icon_reset span{
+  padding-right: 50px;
+}
+
+.icon_reset p{
+  cursor: default;
+  padding: 0 !important;
+  border: 0 !important;
+  font-size: 13px;
+}
+
 .errorLabel {
   font-size: 14px;
   min-height: 25px;
+  color: yellow;
   /* Garante que o espaço para a mensagem de erro seja fixo */
 }
 
@@ -924,7 +996,7 @@
   font-size: 36px;
   position: absolute;
   left: 90%;
-  top: 4%;
+  top: 5%;
 }
 
 .icon_dica:hover {
@@ -975,6 +1047,19 @@
 
 .modalDica button{
   width: 20%;
+}
+
+.anim_pulse{
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
 }
 
 @media (max-width: 1910px) {

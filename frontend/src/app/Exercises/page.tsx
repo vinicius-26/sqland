@@ -6,12 +6,11 @@ import { TailSpin } from 'react-loader-spinner'; // Spinner importado
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faDatabase } from '@fortawesome/free-solid-svg-icons';
-library.add(faDatabase);
+import { faDatabase, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+library.add(faDatabase, faRightFromBracket);
 
 import styles from './styles.module.css';
 import { ProgressBar } from '@/components/ProgressBar/ProgressBar';
-import { Header } from '@/components/Header/Header';
 
 const Exercises: React.FC = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -43,14 +42,21 @@ const Exercises: React.FC = () => {
   const [userXp, setUserXp] = useState(0);
   const [userLevel, setUserLevel] = useState(0);
 
+  const [userLevelAntigo, setUserLevelAntigo] = useState(0);
+
   const [errorMessage, setErrorMessage] = useState('');
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalAnimationClass, setModalAnimationClass] = useState('');
 
+  const [modalLevelUpVisible, setModalLevelUpVisible] = useState(false);
+  const [modalLevelUpAnimationClass, setModalLevelUpAnimationClass] = useState('');
+
   const [orderedOptions, setOrderedOptions] = useState<string[]>([]);
 
   const [freeResponse, setFreeResponse] = useState('');
+
+  const [firstAcess, setFirtsAcess] = useState(false);
 
   const fetchUserXp = async (pUserId: number) => {
     try {
@@ -78,6 +84,7 @@ const Exercises: React.FC = () => {
   };
 
   useEffect(() => {
+    setFirtsAcess(true);
     setIsMounted(true); // Componente montado no cliente
 
     // localStorage.setItem('user', JSON.stringify({ email: 'vistephano123@gmail.com', token: '123' }));
@@ -119,9 +126,16 @@ const Exercises: React.FC = () => {
   useEffect(() => {
     fetchQuestions();
     setModalVisible(false);
+    setModalLevelUpVisible(false);
 
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (userLevel > userLevelAntigo) {
+      openModalLevelUp();
+    }
+  }, [userLevel]);
 
   useEffect(() => {
     if (modalVisible) {
@@ -135,10 +149,12 @@ const Exercises: React.FC = () => {
 
   const openModal = () => {
     setModalVisible(true);
+    setUserLevelAntigo(userLevel);
   };
 
   const closeModal = () => {
     setModalAnimationClass('out');
+    setFirtsAcess(false);
     setTimeout(() => {
 
       // Verifica se há opções selecionadas e limpa para não aparecer no proximo exercicio
@@ -180,7 +196,15 @@ const Exercises: React.FC = () => {
 
       fetchRegisterUserXp();
 
-      onNextButtonClick();
+      if (currentQuestionIndex < 9) {
+        onNextButtonClick();
+      } else {
+        setLoading(true); // Exibe o spinner
+        setTimeout(() => {
+          router.push('/Home');
+          setLoading(false);
+        }, 1000); // Simulando um tempo de delay (1 segundo)
+      }
 
     }, 500); // O tempo deve ser igual à duração da animação
   };
@@ -189,12 +213,15 @@ const Exercises: React.FC = () => {
     // Verifique se uma opção foi selecionada
     if (!activeButtons) {
       console.log('Nenhuma opção foi selecionada.');
-      setErrorMessage('Selecione uma opção acima para continuar');
+      // setErrorMessage('Selecione uma opção acima para continuar');
       return;
     }
 
+    console.log(currentQuestionIndex);
+    console.log(activeButtons);
+
     // Antes de trocar para a pergunta número 4, com índice [3], verifica se está indo para ela e limpa os botões
-    if (currentQuestionIndex == 2 || currentQuestionIndex == 4 || currentQuestionIndex == 8) {
+    if (currentQuestionIndex === 2 || currentQuestionIndex === 4 || currentQuestionIndex === 6) {
       setActiveButtons(null);
     }
 
@@ -204,6 +231,31 @@ const Exercises: React.FC = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCardAnimationClass('slide_in_right');
     }, 500);
+
+  };
+
+  useEffect(() => {
+    if (modalLevelUpVisible) {
+      // Adiciona a classe de animação ao exibir o modal
+      setModalLevelUpAnimationClass('active');
+    } else {
+      // Remove a animação após o fechamento
+      setModalLevelUpAnimationClass('out');
+    }
+  }, [modalLevelUpVisible]);
+
+  const openModalLevelUp = () => {
+    setModalLevelUpVisible(true);
+  };
+
+  const closeModalLevelUp = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setModalLevelUpAnimationClass('out');
+    setTimeout(() => {
+      setModalLevelUpVisible(false);
+    }, 1200); // O tempo deve ser igual à duração da animação
   };
 
   const handleOptionClick = (event: React.MouseEvent<HTMLButtonElement>, optionKey: string) => {
@@ -245,9 +297,6 @@ const Exercises: React.FC = () => {
       // Unir as opções do array orderedOptions em uma string
       const userAnswer = orderedOptions.join(' ').trim();
 
-      console.log('User answer:', userAnswer);
-      console.log('Correct answer:', currentQuestion.correct_answer);
-
       if (userAnswer === currentQuestion.correct_answer.trim()) {
         console.log('Resposta correta!');
         openModal();
@@ -264,9 +313,6 @@ const Exercises: React.FC = () => {
       }
 
       const userAnswer = freeResponse.trim(); // Remove espaços em branco
-
-      console.log('User answer:', userAnswer);
-      console.log('Correct answer:', currentQuestion.correct_answer);
 
       // Comparação sem considerar maiúsculas/minúsculas
       if (userAnswer.toLowerCase() === currentQuestion.correct_answer.toLowerCase().trim()) {
@@ -391,6 +437,7 @@ const Exercises: React.FC = () => {
       fetchQuestions();
       setActiveButtons(null);
       setFreeResponse('');
+      setErrorMessage('');
     }, 800);
 
     setTimeout(() => {
@@ -399,7 +446,10 @@ const Exercises: React.FC = () => {
     }, 1200);
   }
 
-  const onLogOutButtonClick = () => {
+  const onLogOutButtonClick = (event: React.MouseEvent<SVGSVGElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
     localStorage.removeItem('user');
     setLoggedIn(false);
 
@@ -408,6 +458,17 @@ const Exercises: React.FC = () => {
       router.push('/Login');
     }, 1000); // Simulando um tempo de delay (1 segundo)
 
+  };
+
+  const onHomeIconClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setLoading(true); // Exibe o spinner
+    setTimeout(() => {
+      router.push('/Home');
+      setLoading(false);
+    }, 1000); // Simulando um tempo de delay (1 segundo)
   };
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -445,6 +506,27 @@ const Exercises: React.FC = () => {
         </div>
       )}
 
+      {(modalLevelUpVisible && !firstAcess && userLevel != 1 && ((currentQuestionIndex > 5 && currentQuestionIndex === 6 && currentQuestionIndex < 7) || (currentQuestionIndex > 7 && currentQuestionIndex === 8  && currentQuestionIndex < 9))) && (
+        <>
+          <div id="modal-container" className={`${styles.modalLvlUpContainer} ${styles.active} ${modalLevelUpAnimationClass == 'out' ? styles.out : ''}`}>
+            <div className={styles.firework}></div>
+            <div className={styles.firework}></div>
+            <div className={styles.firework}></div>
+
+            <div className={styles.modalLevelUpBackground} onClick={() => { closeModal() }}>
+              <div className={styles.modalLevelUp} onClick={(e) => e.stopPropagation()}>
+                <div>
+                  <h2>Parabéns! Você chegou ao nível {userLevel}</h2>
+                </div>
+                <div className={styles.btn_modal_level_up}>
+                  <button onClick={(e) => { closeModalLevelUp(e) }}>Fechar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       <div className={`${styles.animation_control} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
         <div className={styles.contenedor}>
           {/* <div className={`${styles.main_icon} ${formAnimationClass == 'fade_in' ? styles.fade_in : styles.fade_out} ${isFormVisible ? styles.fade_in : styles.hidden}`}>
@@ -455,7 +537,7 @@ const Exercises: React.FC = () => {
           </div> */}
 
           <div className={styles.main_icon}>
-            <div className={styles.sql_icon}>
+            <div className={styles.sql_icon} onClick={(e) => onHomeIconClick(e)}>
               <FontAwesomeIcon
                 icon="database"
               />
@@ -468,7 +550,7 @@ const Exercises: React.FC = () => {
                 <FontAwesomeIcon
                   className={styles.icon}
                   icon="right-from-bracket"
-                  onClick={() => onLogOutButtonClick()}
+                  onClick={(e) => onLogOutButtonClick(e)}
                 />
               </span>
             </div>
